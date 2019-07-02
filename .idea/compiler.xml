@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="cloud-config_main" target="1.8" />
+      <module name="cloud-config_test" target="1.8" />
+      <module name="cloud-gateway_main" target="1.8" />
+      <module name="cloud-gateway_test" target="1.8" />
+      <module name="cloud_main" target="1.8" />
+      <module name="cloud_test" target="1.8" />
+      <module name="eureka-client1_main" target="1.8" />
+      <module name="eureka-client1_test" target="1.8" />
+      <module name="eureka-client2_main" target="1.8" />
+      <module name="eureka-client2_test" target="1.8" />
+      <module name="eureka-consumer_main" target="1.8" />
+      <module name="eureka-consumer_test" target="1.8" />
+      <module name="eureka-server_main" target="1.8" />
+      <module name="eureka-server_test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
