@@ -5,8 +5,8 @@ spring:
       server:
         git:
           uri: https://github.com/FengCaiHappy/cloud-config.git
-          username: 297107653@qq.com
-          password: qaz851221
+          username: xxx@qq.com
+          password: xxx
           timeout: 10
   application:
     name: cloud-config
