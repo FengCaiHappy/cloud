@@ -20,13 +20,12 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: org.springframework.cloud:spring-cloud-starter-eureka:" level="project" />
-    <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-ec2:1.11.415" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-autoscaling:1.11.415" level="project" />
-    <orderEntry type="library" name="Gradle: io.reactivex:rxjava:1.2.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-sts:1.11.415" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.26" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot:2.1.6.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-autoconfigure:2.1.6.RELEASE" level="project" />
-    <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-web:2.1.6.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-logging:2.1.6.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-actuator:2.1.6.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-freemarker:2.1.6.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.cloud:spring-cloud-netflix-hystrix:2.1.0.RELEASE" level="project" />
@@ -50,7 +49,7 @@
     <orderEntry type="library" name="Gradle: org.springframework.cloud:spring-cloud-context:2.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.cloud:spring-cloud-commons:2.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.security:spring-security-rsa:1.0.7.RELEASE" level="project" />
-    <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-logging:2.1.6.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-web:2.1.6.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: javax.annotation:javax.annotation-api:1.3.2" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-core:5.1.8.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.yaml:snakeyaml:1.23" level="project" />
@@ -82,7 +81,7 @@
     <orderEntry type="library" name="Gradle: org.springframework.cloud:spring-cloud-starter-netflix-archaius:2.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.cloud:spring-cloud-starter-netflix-ribbon:2.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: com.netflix.ribbon:ribbon-eureka:2.3.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-sts:1.11.415" level="project" />
+    <orderEntry type="library" name="Gradle: io.reactivex:rxjava:1.2.0" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-route53:1.11.415" level="project" />
     <orderEntry type="library" name="Gradle: org.codehaus.woodstox:woodstox-core-asl:4.4.1" level="project" />
     <orderEntry type="library" name="Gradle: com.netflix.ribbon:ribbon-transport:2.3.0" level="project" />
@@ -144,7 +143,8 @@
     <orderEntry type="library" name="Gradle: org.springframework.cloud:spring-cloud-starter:2.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.9.9" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.415" level="project" />
-    <orderEntry type="library" name="Gradle: org.antlr:stringtemplate:3.2.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-ec2:1.11.415" level="project" />
     <orderEntry type="library" name="Gradle: antlr:antlr:2.7.7" level="project" />
+    <orderEntry type="library" name="Gradle: org.antlr:stringtemplate:3.2.1" level="project" />
   </component>
 </module>

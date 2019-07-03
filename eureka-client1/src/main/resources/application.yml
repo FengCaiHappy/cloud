@@ -9,3 +9,8 @@ eureka:
 spring:
   application:
     name: eureka-client1
+  cloud:
+      config:
+        label: master
+        uri: http://localhost:8888/
+        profile:
