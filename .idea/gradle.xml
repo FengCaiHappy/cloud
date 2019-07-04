@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/eureka-client2" />
             <option value="$PROJECT_DIR$/eureka-consumer" />
             <option value="$PROJECT_DIR$/eureka-server" />
+            <option value="$PROJECT_DIR$/eureka-server2" />
           </set>
         </option>
       </GradleProjectSettings>

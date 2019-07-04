@@ -1,5 +1,5 @@
 server:
-  port: 8761
+  port: 8766
 
 spring:
   application:
@@ -7,10 +7,10 @@ spring:
 
 eureka:
   instance:
-    hostname: cloud-server1
+    hostname: cloud-server2
     appname: cloud-server
   client:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://cloud-server2:8766/eureka/
+      defaultZone: http://cloud-server1:8761/eureka/

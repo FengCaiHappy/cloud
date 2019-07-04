@@ -14,6 +14,8 @@
       <module name="eureka-client2_test" target="1.8" />
       <module name="eureka-consumer_main" target="1.8" />
       <module name="eureka-consumer_test" target="1.8" />
+      <module name="eureka-server2_main" target="1.8" />
+      <module name="eureka-server2_test" target="1.8" />
       <module name="eureka-server_main" target="1.8" />
       <module name="eureka-server_test" target="1.8" />
     </bytecodeTargetLevel>

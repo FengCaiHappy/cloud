@@ -5,4 +5,5 @@ include 'eureka-consumer'
 include 'cloud-gateway'
 include 'cloud-config'
 include 'eureka-client2'
+include 'eureka-server2'
 
