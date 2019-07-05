@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/cloud-config" />
             <option value="$PROJECT_DIR$/cloud-gateway" />
+            <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/eureka-client1" />
             <option value="$PROJECT_DIR$/eureka-client2" />
             <option value="$PROJECT_DIR$/eureka-consumer" />

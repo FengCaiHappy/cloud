@@ -11,6 +11,9 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/cloud-gateway/cloud-gateway_test.iml" filepath="$PROJECT_DIR$/.idea/modules/cloud-gateway/cloud-gateway_test.iml" group="cloud-gateway" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/cloud_main.iml" filepath="$PROJECT_DIR$/.idea/modules/cloud_main.iml" group="cloud" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/cloud_test.iml" filepath="$PROJECT_DIR$/.idea/modules/cloud_test.iml" group="cloud" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common.iml" filepath="$PROJECT_DIR$/.idea/modules/common.iml" group="common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/common_main.iml" filepath="$PROJECT_DIR$/.idea/modules/common/common_main.iml" group="common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/common_test.iml" filepath="$PROJECT_DIR$/.idea/modules/common/common_test.iml" group="common" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-client1.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-client1.iml" group="eureka-client1" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-client1/eureka-client1_main.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-client1/eureka-client1_main.iml" group="eureka-client1" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-client1/eureka-client1_test.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-client1/eureka-client1_test.iml" group="eureka-client1" />
