@@ -8,9 +8,9 @@ import java.util.HashMap;
 public class Common {
 
     //设置APPID/AK/SK
-    public static final String APP_ID = "16714630";
-    public static final String API_KEY = "dbGlwI1ZXKNRkUEY6nTT16Dr";
-    public static final String SECRET_KEY = "NnVNlGKbbjXosAj9XD0t4CjKKXjW5Oes";
+    public static final String APP_ID = "xxxxx";
+    public static final String API_KEY = "xxxxx";
+    public static final String SECRET_KEY = "xxxxx";
 
     public static void main(String[] args){
         Invoker.setProvider(new UserDaoProvider());
