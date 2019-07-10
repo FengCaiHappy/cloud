@@ -20,7 +20,10 @@ public class DefaultDaoExecutor implements IDaoExecutor {
 
     @Override
     public <T> T queryById(Object param, String tableName) {
-        return null;
+        Map<String, Object> sqlParam = new HashMap<>();
+        sqlParam.put("tableName", tableName);
+        sqlParam.put("whereSql", beanToWhereSQL(param));
+        return (T)dynamicSqlMapper.queryById(sqlParam);
     }
 
     public <T> T list(Object param, String tableName){
@@ -37,7 +40,10 @@ public class DefaultDaoExecutor implements IDaoExecutor {
 
     @Override
     public <T> T delete(Object param, String tableName) {
-        return null;
+        Map<String, Object> sqlParam = new HashMap<>();
+        sqlParam.put("tableName", tableName);
+        sqlParam.put("whereSql", beanToWhereSQL(param));
+        return (T)dynamicSqlMapper.delete(sqlParam);
     }
 
     @Override

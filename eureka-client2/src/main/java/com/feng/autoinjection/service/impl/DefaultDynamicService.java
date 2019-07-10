@@ -14,7 +14,7 @@ public class DefaultDynamicService implements IDynamicService {
     }
 
     public Object queryById(Object param, String tableName) {
-        return null;
+        return daoExecutor.queryById(param, tableName);
     }
 
     public Object list(Object param, String tableName) {
@@ -22,15 +22,15 @@ public class DefaultDynamicService implements IDynamicService {
     }
 
     public Object update(Object param, String tableName) {
-        return "123";
+        return daoExecutor.update(param, tableName);
     }
 
     public Object delete(Object param, String tableName) {
-        return null;
+        return daoExecutor.delete(param, tableName);
     }
 
     public Object add(Object param, String tableName) {
-        return null;
+        return daoExecutor.add(param, tableName);
     }
 
 }
