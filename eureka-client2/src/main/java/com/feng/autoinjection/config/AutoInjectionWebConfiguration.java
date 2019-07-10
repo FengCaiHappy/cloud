@@ -46,13 +46,6 @@ public class AutoInjectionWebConfiguration {
         return new DefaultDaoExecutor();
     }
 
-//    @Bean
-//    public MapperScannerConfigurer aaa(){
-//        MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
-//        mapperScannerConfigurer.setBasePackage("com.feng.autoinjection.dao");
-//        return mapperScannerConfigurer;
-//    }
-
     @Bean
     public IDynamicUrlController dynamicUrlController(){
         InterfaceProvider dynamicUrlProvider = new DefaultAutoInjectionProvider();

@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface DynamicSqlMapper {
+public interface DynamicSqlMapper<T> {
 
     Object queryById(Map<String, Object> param);
 
+    //@Select("select * from ${tableName} where ${whereSql};")
     List<Object> list(Map<String, Object> param);
 
     Object update(Map<String, Object> param);
