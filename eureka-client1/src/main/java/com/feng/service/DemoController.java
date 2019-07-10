@@ -1,4 +1,4 @@
-package com.feng.service.controller;
+package com.feng.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

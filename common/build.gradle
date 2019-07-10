@@ -14,5 +14,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.baidu.aip:java-sdk:4.11.3'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compile ('com.baidu.aip:java-sdk:4.11.3') {
+        exclude group: 'org.slf4j'
+    }
 }

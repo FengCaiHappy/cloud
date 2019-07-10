@@ -2,10 +2,12 @@
   <library name="Gradle: io.projectreactor:reactor-core:3.2.10.RELEASE">
     <CLASSES>
       <root url="jar://F:/gradletemp/caches/modules-2/files-2.1/io.projectreactor/reactor-core/3.2.10.RELEASE/14b979abc580502c679d0b318814cef8b2066fce/reactor-core-3.2.10.RELEASE.jar!/" />
+      <root url="jar://D:/software/gradle-4.3.1/caches/modules-2/files-2.1/io.projectreactor/reactor-core/3.2.10.RELEASE/14b979abc580502c679d0b318814cef8b2066fce/reactor-core-3.2.10.RELEASE.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="jar://F:/gradletemp/caches/modules-2/files-2.1/io.projectreactor/reactor-core/3.2.10.RELEASE/70d64418b7a89fc1466259191a46422a2737a888/reactor-core-3.2.10.RELEASE-sources.jar!/" />
+      <root url="jar://D:/software/gradle-4.3.1/caches/modules-2/files-2.1/io.projectreactor/reactor-core/3.2.10.RELEASE/70d64418b7a89fc1466259191a46422a2737a888/reactor-core-3.2.10.RELEASE-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

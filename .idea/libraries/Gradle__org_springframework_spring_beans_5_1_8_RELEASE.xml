@@ -2,10 +2,12 @@
   <library name="Gradle: org.springframework:spring-beans:5.1.8.RELEASE">
     <CLASSES>
       <root url="jar://F:/gradletemp/caches/modules-2/files-2.1/org.springframework/spring-beans/5.1.8.RELEASE/e35fa81d0142ef7c1247a7dee8b1ef2dd78c6322/spring-beans-5.1.8.RELEASE.jar!/" />
+      <root url="jar://D:/software/gradle-4.3.1/caches/modules-2/files-2.1/org.springframework/spring-beans/5.1.8.RELEASE/e35fa81d0142ef7c1247a7dee8b1ef2dd78c6322/spring-beans-5.1.8.RELEASE.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="jar://F:/gradletemp/caches/modules-2/files-2.1/org.springframework/spring-beans/5.1.8.RELEASE/70ce5cb63540ea0a184a49d454844e9d9f21fbd5/spring-beans-5.1.8.RELEASE-sources.jar!/" />
+      <root url="jar://D:/software/gradle-4.3.1/caches/modules-2/files-2.1/org.springframework/spring-beans/5.1.8.RELEASE/70ce5cb63540ea0a184a49d454844e9d9f21fbd5/spring-beans-5.1.8.RELEASE-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

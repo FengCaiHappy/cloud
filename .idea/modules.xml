@@ -24,6 +24,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-consumer/eureka-consumer_main.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-consumer/eureka-consumer_main.iml" group="eureka-consumer" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-consumer/eureka-consumer_test.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-consumer/eureka-consumer_test.iml" group="eureka-consumer" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-server.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-server.iml" group="eureka-server" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-server2/eureka-server2.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-server2/eureka-server2.iml" group="eureka-server2" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-server2.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-server2.iml" group="eureka-server2" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-server2/eureka-server2_main.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-server2/eureka-server2_main.iml" group="eureka-server2" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-server2/eureka-server2_test.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-server2/eureka-server2_test.iml" group="eureka-server2" />

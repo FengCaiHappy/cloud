@@ -10,6 +10,7 @@ public class UserDaoProvider implements InterfaceProvider{
 
     @Override
     public Object implMethod(Method method, Object[] args) {
+        System.out.println("~~~~~~~~~~~~`method call success!");
         return "method call success!";
     }
 }

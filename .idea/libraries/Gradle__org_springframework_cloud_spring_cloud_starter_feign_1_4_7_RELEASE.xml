@@ -2,10 +2,12 @@
   <library name="Gradle: org.springframework.cloud:spring-cloud-starter-feign:1.4.7.RELEASE">
     <CLASSES>
       <root url="jar://F:/gradletemp/caches/modules-2/files-2.1/org.springframework.cloud/spring-cloud-starter-feign/1.4.7.RELEASE/ace222c22bc2fca0ba46fda74308841455ad509d/spring-cloud-starter-feign-1.4.7.RELEASE.jar!/" />
+      <root url="jar://D:/software/gradle-4.3.1/caches/modules-2/files-2.1/org.springframework.cloud/spring-cloud-starter-feign/1.4.7.RELEASE/ace222c22bc2fca0ba46fda74308841455ad509d/spring-cloud-starter-feign-1.4.7.RELEASE.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="jar://F:/gradletemp/caches/modules-2/files-2.1/org.springframework.cloud/spring-cloud-starter-feign/1.4.7.RELEASE/4a10d2195e283e23486a3e3eef39d9a69460d221/spring-cloud-starter-feign-1.4.7.RELEASE-sources.jar!/" />
+      <root url="jar://D:/software/gradle-4.3.1/caches/modules-2/files-2.1/org.springframework.cloud/spring-cloud-starter-feign/1.4.7.RELEASE/4a10d2195e283e23486a3e3eef39d9a69460d221/spring-cloud-starter-feign-1.4.7.RELEASE-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

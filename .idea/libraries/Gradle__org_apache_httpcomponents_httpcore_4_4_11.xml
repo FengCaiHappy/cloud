@@ -2,10 +2,12 @@
   <library name="Gradle: org.apache.httpcomponents:httpcore:4.4.11">
     <CLASSES>
       <root url="jar://F:/gradletemp/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.11/de748cf874e4e193b42eceea9fe5574fabb9d4df/httpcore-4.4.11.jar!/" />
+      <root url="jar://D:/software/gradle-4.3.1/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.11/de748cf874e4e193b42eceea9fe5574fabb9d4df/httpcore-4.4.11.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="jar://F:/gradletemp/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.11/95167d269607b358ba3ed7030ccd336dad8591a0/httpcore-4.4.11-sources.jar!/" />
+      <root url="jar://D:/software/gradle-4.3.1/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.11/95167d269607b358ba3ed7030ccd336dad8591a0/httpcore-4.4.11-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

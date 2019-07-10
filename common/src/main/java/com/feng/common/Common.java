@@ -15,7 +15,7 @@ public class Common {
     public static void main(String[] args){
         Invoker.setProvider(new UserDaoProvider());
         IUserDao userDao = Invoker.getInstance(IUserDao.class);
-        System.out.println(userDao.getUserName("1213"));
+        System.out.println(userDao.getUserName());
 //        method(args);
     }
 

@@ -2,10 +2,12 @@
   <library name="Gradle: org.springframework.cloud:spring-cloud-context:2.1.0.RELEASE">
     <CLASSES>
       <root url="jar://F:/gradletemp/caches/modules-2/files-2.1/org.springframework.cloud/spring-cloud-context/2.1.0.RELEASE/6084692013eed0905ceb8c0426c5bcb0c671ed69/spring-cloud-context-2.1.0.RELEASE.jar!/" />
+      <root url="jar://D:/software/gradle-4.3.1/caches/modules-2/files-2.1/org.springframework.cloud/spring-cloud-context/2.1.0.RELEASE/6084692013eed0905ceb8c0426c5bcb0c671ed69/spring-cloud-context-2.1.0.RELEASE.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="jar://F:/gradletemp/caches/modules-2/files-2.1/org.springframework.cloud/spring-cloud-context/2.1.0.RELEASE/918214b670ab349cc460c1b4a423d573cdb1175f/spring-cloud-context-2.1.0.RELEASE-sources.jar!/" />
+      <root url="jar://D:/software/gradle-4.3.1/caches/modules-2/files-2.1/org.springframework.cloud/spring-cloud-context/2.1.0.RELEASE/918214b670ab349cc460c1b4a423d573cdb1175f/spring-cloud-context-2.1.0.RELEASE-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

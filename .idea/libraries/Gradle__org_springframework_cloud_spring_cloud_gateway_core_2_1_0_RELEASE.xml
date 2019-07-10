@@ -2,10 +2,12 @@
   <library name="Gradle: org.springframework.cloud:spring-cloud-gateway-core:2.1.0.RELEASE">
     <CLASSES>
       <root url="jar://F:/gradletemp/caches/modules-2/files-2.1/org.springframework.cloud/spring-cloud-gateway-core/2.1.0.RELEASE/c2c8b63eb876c421094f2e9380396b60f3f0a22e/spring-cloud-gateway-core-2.1.0.RELEASE.jar!/" />
+      <root url="jar://D:/software/gradle-4.3.1/caches/modules-2/files-2.1/org.springframework.cloud/spring-cloud-gateway-core/2.1.0.RELEASE/c2c8b63eb876c421094f2e9380396b60f3f0a22e/spring-cloud-gateway-core-2.1.0.RELEASE.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="jar://F:/gradletemp/caches/modules-2/files-2.1/org.springframework.cloud/spring-cloud-gateway-core/2.1.0.RELEASE/57105ec3a52734a531be48135da45329d680cf56/spring-cloud-gateway-core-2.1.0.RELEASE-sources.jar!/" />
+      <root url="jar://D:/software/gradle-4.3.1/caches/modules-2/files-2.1/org.springframework.cloud/spring-cloud-gateway-core/2.1.0.RELEASE/57105ec3a52734a531be48135da45329d680cf56/spring-cloud-gateway-core-2.1.0.RELEASE-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
