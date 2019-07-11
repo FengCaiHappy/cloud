@@ -18,6 +18,16 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
 
     private IDynamicService dynamicService;
 
+    private Map<String, Object> mappers;
+
+    public DefaultAutoInjectionProvider(){
+
+    }
+
+    public DefaultAutoInjectionProvider(Map<String, Object> mappers){
+        this.mappers = mappers;
+    }
+
     public void setDynamicService(IDynamicService dynamicService){
         this.dynamicService = dynamicService;
     }
@@ -40,9 +50,7 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
         String methodName = patterns[2];
         Map<String, Object> params = getParameterMap(request);
         try {
-            //todo
-            String fullName = getFullBeanName(tableName);
-            Object beanParam = JSONObject.parseObject(JSONObject.toJSONString(params), Class.forName("com.feng.entity.UserInfo"));
+            Object beanParam = JSONObject.parseObject(JSONObject.toJSONString(params), Class.forName(getFullBeanName(tableName)));
             Method invokeMethod = IDynamicService.class.getDeclaredMethod(methodName, Object.class, String.class);
             return invokeMethod.invoke(dynamicService, beanParam, tableName);
         } catch (ClassNotFoundException e) {
@@ -57,15 +65,15 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
         return "";
     }
 
-    private static String getFullBeanName(String beanName){
-        return beanName;
+    private String getFullBeanName(String beanName){
+        return mappers.get(beanName).toString();
     }
 
     private static Map<String, Object> getParameterMap(HttpServletRequest request) {
         Map<String, String[]> properties = request.getParameterMap();
         Map<String, Object> returnMap = new HashMap<>();
         Iterator<Map.Entry<String, String[]>> iter = properties.entrySet().iterator();
-        String name = "";
+        String name;
         String value = "";
         while (iter.hasNext()) {
             Map.Entry<String, String[]> entry = iter.next();

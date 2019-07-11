@@ -1,5 +1,8 @@
 package com.feng.entity;
 
+import com.feng.autoinjection.autoannotation.FTableName;
+
+@FTableName(name="userInfo")
 public class UserInfo {
 
     private Integer id;

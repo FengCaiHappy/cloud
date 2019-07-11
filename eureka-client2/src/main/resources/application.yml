@@ -20,5 +20,4 @@ mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
-fTable:
-  names: userInfo,deptInfo
+fTableBasePackage: com.feng
