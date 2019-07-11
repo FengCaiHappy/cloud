@@ -5,6 +5,7 @@ import com.feng.autoinjection.controller.IDynamicUrlController;
 import com.feng.autoinjection.core.autoinvoker.AutoInvoker;
 import com.feng.autoinjection.core.provider.InterfaceProvider;
 import com.feng.autoinjection.core.provider.impl.DefaultAutoInjectionProvider;
+import com.feng.autoinjection.core.resulthandler.IResultHandler;
 import com.feng.autoinjection.daoexecutor.IDaoExecutor;
 import com.feng.autoinjection.daoexecutor.impl.DefaultDaoExecutor;
 import com.feng.autoinjection.service.IDynamicService;
@@ -13,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.handler.AbstractHandlerMethodMapping;
@@ -36,6 +38,9 @@ public class AutoInjectionWebConfiguration {
     @Autowired
     private AbstractHandlerMethodMapping abstractHandlerMethodMapping;
 
+    @Autowired
+    private ApplicationContext applicationContext;
+
     @Bean
     public IDynamicService defaultDynamicService(){
         return new DefaultDynamicService();
@@ -48,7 +53,7 @@ public class AutoInjectionWebConfiguration {
 
     @Bean
     public IDynamicUrlController dynamicUrlController(){
-        InterfaceProvider dynamicUrlProvider = new DefaultAutoInjectionProvider(getMappers());
+        InterfaceProvider dynamicUrlProvider = new DefaultAutoInjectionProvider(getMappers(), getResultHandler());
         dynamicUrlProvider.setDynamicService(defaultDynamicService());
         AutoInvoker.setProvider(dynamicUrlProvider);
         return AutoInvoker.getInstance(IDynamicUrlController.class);
@@ -68,6 +73,20 @@ public class AutoInjectionWebConfiguration {
 
                 abstractHandlerMethodMapping.registerMapping(mapping, "dynamicUrlController", method);
             }
+        }
+    }
+
+    private IResultHandler getResultHandler(){
+        String[] handlerNames = applicationContext.getBeanNamesForType(IResultHandler.class);
+        if(handlerNames.length == 0){
+            return null;
+        } else {
+            for(String names : handlerNames){
+                if(!"IResultHandler".equals(names)){
+                    return (IResultHandler)applicationContext.getBean(names);
+                }
+            }
+            return null;
         }
     }
 

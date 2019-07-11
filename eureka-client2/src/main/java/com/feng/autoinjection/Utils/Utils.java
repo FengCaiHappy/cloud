@@ -2,11 +2,9 @@ package com.feng.autoinjection.Utils;
 
 import org.yaml.snakeyaml.Yaml;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Utils {
 
@@ -35,5 +33,30 @@ public class Utils {
             System.out.println(e.getMessage());
         }
         return null;
+    }
+
+    public static Map<String, Object> getParameterMap(HttpServletRequest request) {
+        Map<String, String[]> properties = request.getParameterMap();
+        Map<String, Object> returnMap = new HashMap<>();
+        Iterator<Map.Entry<String, String[]>> iter = properties.entrySet().iterator();
+        String name, value = "";
+        while (iter.hasNext()) {
+            Map.Entry<String, String[]> entry = iter.next();
+            name = entry.getKey();
+            Object valueObj = entry.getValue();
+            if (null == valueObj) {
+                value = "";
+            } else if (valueObj instanceof String[]) {
+                String[] values = (String[]) valueObj;
+                for (int i = 0; i < values.length; i++) {
+                    value = values[i] + ",";
+                }
+                value = value.substring(0, value.length() - 1);
+            } else {
+                value = valueObj.toString();
+            }
+            returnMap.put(name, value);
+        }
+        return returnMap;
     }
 }
