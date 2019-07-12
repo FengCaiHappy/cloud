@@ -30,6 +30,8 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-server2/eureka-server2_test.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-server2/eureka-server2_test.iml" group="eureka-server2" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-server/eureka-server_main.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-server/eureka-server_main.iml" group="eureka-server" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-server/eureka-server_test.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-server/eureka-server_test.iml" group="eureka-server" />
+      <module fileurl="file://$PROJECT_DIR$/gdxg.iml" filepath="$PROJECT_DIR$/gdxg.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test.iml" filepath="$PROJECT_DIR$/test.iml" />
     </modules>
   </component>
 </project>
