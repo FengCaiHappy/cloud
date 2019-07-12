@@ -54,8 +54,11 @@ public class DefaultDaoExecutor implements IDaoExecutor {
     public <T> T delete(Object param, String tableName) {
         Map<String, Object> sqlParam = new HashMap<>();
         sqlParam.put("tableName", tableName);
-        //todo
-        sqlParam.put("whereSql", beanToSQL(param).get("whereSQL"));
+        Map<String, String> sqls = beanToSQL(param);
+        if("0".equals(sqls.get("valueCount"))){
+            throw new NullPointerException("can not found any param values, please check your params");
+        }
+        sqlParam.put("whereSql", sqls.get("whereSQL"));
         return (T)dynamicSqlMapper.delete(sqlParam);
     }
 
@@ -69,12 +72,14 @@ public class DefaultDaoExecutor implements IDaoExecutor {
         return (T)dynamicSqlMapper.add(sqlParam);
     }
 
+    //todo
     private static Map<String, String> beanToSQL(Object obj) {
         if(obj == null){
             return null;
         }
         Map<String, String> resultMap = new HashMap<>();
 
+        Integer valueCount = 0;
         StringBuffer whereSQL = new StringBuffer(" 1 = 1 ");
         StringBuffer keySet = new StringBuffer(" ");
         StringBuffer valueSet = new StringBuffer(" ");
@@ -108,7 +113,7 @@ public class DefaultDaoExecutor implements IDaoExecutor {
             if(value == null){
                 continue;
             }
-
+            valueCount++;
             if(!firstIndex){
                 keySet.append(" , ");
                 valueSet.append(" , ");
@@ -140,6 +145,7 @@ public class DefaultDaoExecutor implements IDaoExecutor {
         resultMap.put("valueSet", valueSet.toString());
         resultMap.put("updateSQL", updateSQL.toString());
         resultMap.put("updateWhereSQL", updateWhereSQL.toString());
+        resultMap.put("valueCount", valueCount.toString());
         return resultMap;
     }
 
