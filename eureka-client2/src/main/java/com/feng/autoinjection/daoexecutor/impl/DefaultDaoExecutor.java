@@ -2,6 +2,7 @@ package com.feng.autoinjection.daoexecutor.impl;
 
 import com.feng.autoinjection.dao.DynamicSqlMapper;
 import com.feng.autoinjection.daoexecutor.IDaoExecutor;
+import org.apache.commons.lang.StringUtils;
 
 import javax.annotation.Resource;
 import java.beans.BeanInfo;
@@ -18,45 +19,67 @@ public class DefaultDaoExecutor implements IDaoExecutor {
     @Resource
     private DynamicSqlMapper dynamicSqlMapper;
 
+    //todo id?
+
     @Override
     public <T> T queryById(Object param, String tableName) {
         Map<String, Object> sqlParam = new HashMap<>();
         sqlParam.put("tableName", tableName);
-        sqlParam.put("whereSql", beanToWhereSQL(param));
+        sqlParam.put("whereSql", beanToSQL(param).get("whereSQL"));
         return (T)dynamicSqlMapper.queryById(sqlParam);
     }
 
     public <T> T list(Object param, String tableName){
         Map<String, Object> sqlParam = new HashMap<>();
         sqlParam.put("tableName", tableName);
-        sqlParam.put("whereSql", beanToWhereSQL(param));
+        sqlParam.put("whereSql", beanToSQL(param).get("whereSQL"));
         return (T)dynamicSqlMapper.list(sqlParam);
     }
 
     @Override
     public <T> T update(Object param, String tableName) {
-        return null;
+        Map<String, Object> sqlParam = new HashMap<>();
+        sqlParam.put("tableName", tableName);
+        Map<String, String> sqls = beanToSQL(param);
+        String whereSql = sqls.get("updateWhereSQL");
+        if(StringUtils.isEmpty(whereSql)){
+            throw new NullPointerException("can not found id, please check your params");
+        }
+        sqlParam.put("columnName", sqls.get("updateSQL"));
+        sqlParam.put("whereSql", whereSql);
+        return (T)dynamicSqlMapper.update(sqlParam);
     }
 
     @Override
     public <T> T delete(Object param, String tableName) {
         Map<String, Object> sqlParam = new HashMap<>();
         sqlParam.put("tableName", tableName);
-        sqlParam.put("whereSql", beanToWhereSQL(param));
+        //todo
+        sqlParam.put("whereSql", beanToSQL(param).get("whereSQL"));
         return (T)dynamicSqlMapper.delete(sqlParam);
     }
 
     @Override
     public <T> T add(Object param, String tableName) {
-        return null;
+        Map<String, Object> sqlParam = new HashMap<>();
+        sqlParam.put("tableName", tableName);
+        Map<String, String> sqls = beanToSQL(param);
+        sqlParam.put("columnName", sqls.get("keySet"));
+        sqlParam.put("columnValue", sqls.get("valueSet"));
+        return (T)dynamicSqlMapper.add(sqlParam);
     }
 
-    private static String beanToWhereSQL(Object obj)  {
+    private static Map<String, String> beanToSQL(Object obj) {
         if(obj == null){
             return null;
         }
+        Map<String, String> resultMap = new HashMap<>();
 
-        StringBuffer stringBuffer = new StringBuffer(" 1 = 1 ");
+        StringBuffer whereSQL = new StringBuffer(" 1 = 1 ");
+        StringBuffer keySet = new StringBuffer(" ");
+        StringBuffer valueSet = new StringBuffer(" ");
+        StringBuffer updateSQL = new StringBuffer(" ");
+        StringBuffer updateWhereSQL = new StringBuffer();
 
         BeanInfo beanInfo = null;
         try {
@@ -65,6 +88,9 @@ public class DefaultDaoExecutor implements IDaoExecutor {
             e.printStackTrace();
         }
         PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+
+        boolean firstIndex = true;
+
         for (PropertyDescriptor property : propertyDescriptors) {
             String key = property.getName();
             if (key.compareToIgnoreCase("class") == 0) {
@@ -82,15 +108,39 @@ public class DefaultDaoExecutor implements IDaoExecutor {
             if(value == null){
                 continue;
             }
-            stringBuffer.append(" And " + key + " = ");
-            if("int".equals(getType(value)) || "class java.lang.Integer".equals(getType(value))){
-                stringBuffer.append(value);
-            } else{
-                stringBuffer.append( " '" + value + "' ");
+
+            if(!firstIndex){
+                keySet.append(" , ");
+                valueSet.append(" , ");
+                updateSQL.append(" , ");
             }
 
+            keySet.append(" " + key + " ");
+            updateSQL.append(" " + key + " = ");
+            whereSQL.append(" And " + key + " = ");
+            if("int".equals(getType(value)) || "class java.lang.Integer".equals(getType(value))){
+                whereSQL.append(value);
+                valueSet.append(" " + value + " ");
+                updateSQL.append(" " + value + " ");
+                if("id".equals(key)){
+                    updateWhereSQL.append("id = " + value);
+                }
+            } else{
+                whereSQL.append( " '" + value + "' ");
+                valueSet.append(" '" + value + "' ");
+                updateSQL.append(" '" + value + "' ");
+                if("id".equals(key)){
+                    updateWhereSQL.append("id = '" + value + "' ");
+                }
+            }
+            firstIndex = false;
         }
-        return stringBuffer.toString();
+        resultMap.put("whereSQL", whereSQL.toString());
+        resultMap.put("keySet", keySet.toString());
+        resultMap.put("valueSet", valueSet.toString());
+        resultMap.put("updateSQL", updateSQL.toString());
+        resultMap.put("updateWhereSQL", updateWhereSQL.toString());
+        return resultMap;
     }
 
     private static String getType(Object o){
