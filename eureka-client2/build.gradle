@@ -23,6 +23,7 @@ dependencies {
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.0.1'
     implementation 'mysql:mysql-connector-java:6.0.6'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.projectlombok:lombok:1.18.8'
     //compile fileTree(dir:'dirs',includes:['*jar'])
 }
 dependencyManagement {
