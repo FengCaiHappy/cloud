@@ -72,7 +72,7 @@ public class DefaultDaoExecutor implements IDaoExecutor {
         return (T)dynamicSqlMapper.add(sqlParam);
     }
 
-    //todo
+    //todo optimization
     private static Map<String, String> beanToSQL(Object obj) {
         if(obj == null){
             return null;

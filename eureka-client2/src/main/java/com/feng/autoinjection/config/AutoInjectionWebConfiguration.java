@@ -17,9 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.handler.AbstractHandlerMethodMapping;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -36,7 +36,7 @@ public class AutoInjectionWebConfiguration {
     private Map<String, Object> mappers;
 
     @Autowired
-    private AbstractHandlerMethodMapping abstractHandlerMethodMapping;
+    private RequestMappingHandlerMapping requestMappingHandlerMapping;
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -71,7 +71,7 @@ public class AutoInjectionWebConfiguration {
                 RequestMappingInfo mapping = new RequestMappingInfo(patterns, null, null, null, null, null, null);
                 Method method = IDynamicUrlController.class.getDeclaredMethods()[i];
 
-                abstractHandlerMethodMapping.registerMapping(mapping, "dynamicUrlController", method);
+                requestMappingHandlerMapping.registerMapping(mapping, "dynamicUrlController", method);
             }
         }
     }

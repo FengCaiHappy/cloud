@@ -6,11 +6,11 @@ import com.feng.autoinjection.controller.IDynamicUrlController;
 import com.feng.autoinjection.core.provider.InterfaceProvider;
 import com.feng.autoinjection.core.resulthandler.IResultHandler;
 import com.feng.autoinjection.service.IDynamicService;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -20,6 +20,7 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
 
     private Map<String, Object> mappers;
     private IResultHandler handler;
+    private ApplicationContext applicationContext;
 
     public DefaultAutoInjectionProvider(){
         super();
@@ -54,18 +55,16 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
         try {
             Object beanParam = JSONObject.parseObject(JSONObject.toJSONString(params), Class.forName(getFullBeanName(tableName)));
             Method invokeMethod = IDynamicService.class.getDeclaredMethod(methodName, Object.class, String.class);
+            //todo before
             Object result = invokeMethod.invoke(dynamicService, beanParam, tableName);
+            //todo after
+
+            //全局结果处理器
             if(handler != null){
                return handler.handler(result);
             }
             return result;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }  catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "";
