@@ -2,7 +2,7 @@ package com.feng.autoinjection.daoexecutor.impl;
 
 import com.feng.autoinjection.dao.DynamicSqlMapper;
 import com.feng.autoinjection.daoexecutor.IDaoExecutor;
-import org.apache.commons.lang.StringUtils;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.beans.BeanInfo;
