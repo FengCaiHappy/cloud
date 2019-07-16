@@ -6,6 +6,8 @@ import com.feng.autoinjection.controller.IDynamicUrlController;
 import com.feng.autoinjection.core.provider.InterfaceProvider;
 import com.feng.autoinjection.core.resulthandler.IResultHandler;
 import com.feng.autoinjection.service.IDynamicService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -15,6 +17,8 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 public class DefaultAutoInjectionProvider implements InterfaceProvider {
+
+    private Logger logger = LoggerFactory.getLogger(DefaultAutoInjectionProvider.class);
 
     private IDynamicService dynamicService;
 
@@ -43,6 +47,7 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
 
     @Override
     public Object implMethod(Method method, Object[] args) {
+        long startTime = System.currentTimeMillis();
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = servletRequestAttributes.getRequest();
         String url = request.getRequestURI();
@@ -63,6 +68,7 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
             if(handler != null){
                return handler.handler(result);
             }
+            logger.info("调用耗时: " + (System.currentTimeMillis()-startTime) + "MS");
             return result;
         } catch (Exception e) {
             e.printStackTrace();

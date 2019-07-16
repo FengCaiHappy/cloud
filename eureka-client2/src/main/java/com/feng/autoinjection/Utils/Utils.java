@@ -1,20 +1,16 @@
 package com.feng.autoinjection.Utils;
 
 import org.springframework.util.StringUtils;
-import org.yaml.snakeyaml.Yaml;
 
 import javax.servlet.http.HttpServletRequest;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class Utils {
-
-    private static Map<String, String> cacheMap;
 
     public static List<String> getKeyFromMap(Map<String, Object> map){
         List<String> result = new ArrayList<>();
@@ -23,22 +19,6 @@ public class Utils {
             result.add(iter.next());
         }
         return result;
-    }
-
-    public static String getYMLProperties(String key){
-        if(cacheMap != null){
-            return cacheMap.get(key);
-        }
-        try {
-            Yaml yaml = new Yaml();
-            InputStream resourceAsStream = Utils.class.getClassLoader().getResourceAsStream("application.yml");
-            cacheMap = (Map) yaml.load(resourceAsStream);
-            return cacheMap.get(key);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-        }
-        return null;
     }
 
     public static Map<String, Object> getParameterMap(HttpServletRequest request) {
