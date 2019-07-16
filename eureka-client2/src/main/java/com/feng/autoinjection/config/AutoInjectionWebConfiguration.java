@@ -8,11 +8,19 @@ import com.feng.autoinjection.core.provider.impl.DefaultAutoInjectionProvider;
 import com.feng.autoinjection.core.resulthandler.IResultHandler;
 import com.feng.autoinjection.daoexecutor.IDaoExecutor;
 import com.feng.autoinjection.daoexecutor.impl.DefaultDaoExecutor;
+import com.feng.autoinjection.mybatisplugin.ReBuildSQLPlugin;
 import com.feng.autoinjection.service.IDynamicService;
 import com.feng.autoinjection.service.impl.DefaultDynamicService;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.dom4j.Attribute;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,9 +29,10 @@ import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Configuration
@@ -33,7 +42,19 @@ public class AutoInjectionWebConfiguration {
 
     private String[] defaultUrls = {"index", "add", "delete", "update", "list", "queryById"};
 
+    @Value("${ftables.xml-location}")
+    private String locationName;
+
+    @Value("${ftables.base-package}")
+    private String basePackage;
+
+    private static final String DEFAULTPACKAGE = "com";
+
+    private static final String XMLTAG = "IsFtable";
+
     private Map<String, Object> mappers;
+
+    private Map<String, String> multiTableQuerySQL;
 
     @Autowired
     private RequestMappingHandlerMapping requestMappingHandlerMapping;
@@ -48,7 +69,14 @@ public class AutoInjectionWebConfiguration {
 
     @Bean
     public IDaoExecutor daoExecutor(){
-        return new DefaultDaoExecutor();
+        getMultiTableQuerySQL();
+        return new DefaultDaoExecutor(multiTableQuerySQL);
+    }
+
+    @Bean
+    public ReBuildSQLPlugin DemoPlugin(){
+        getMultiTableQuerySQL();
+        return new ReBuildSQLPlugin(multiTableQuerySQL);
     }
 
     @Bean
@@ -94,8 +122,75 @@ public class AutoInjectionWebConfiguration {
         if(mappers != null){
             return mappers;
         }
-        String basePackage = StringUtils.isEmpty(Utils.getYMLProperties("fTableBasePackage")) ? "com.feng":
-                Utils.getYMLProperties("fTableBasePackage");
-        return mappers = AutoAnnotationScanner.getBeanTableMapper(basePackage);
+        return mappers = AutoAnnotationScanner.getBeanTableMapper(StringUtils.isEmpty(basePackage) ? DEFAULTPACKAGE:basePackage);
     }
+
+    public void getMultiTableQuerySQL(){
+        if(multiTableQuerySQL != null){
+            return;
+        }
+        if(StringUtils.isEmpty(locationName)|| "/".equals(locationName.trim())){
+            throw new NullPointerException("the path is null");
+        }
+
+        List<File> result = new ArrayList<>();
+        searchFiles(getResourcesFile(), getLocationNameArr(locationName), 0, result);
+
+        SAXReader reader = new SAXReader();
+
+        multiTableQuerySQL = new HashMap<>();
+
+        for(File file : result){
+            Document document = null;
+            try {
+                document = reader.read(file);
+            } catch (DocumentException e) {
+                e.printStackTrace();
+            }
+            Element rootElement = document.getRootElement();
+            if(XMLTAG.equals(rootElement.getName())){
+                Iterator iterator = rootElement.elementIterator();
+                while(iterator.hasNext()){
+                    Element childElement = (Element) iterator.next();
+                    List<Attribute> attributes = childElement.attributes();
+                    for(Attribute attribute : attributes){
+                        //"tagName:" + childElement.getName()
+                        multiTableQuerySQL.put(attribute.getValue(), childElement.getTextTrim());
+                    }
+                }
+            }
+        }
+    }
+
+    private File getResourcesFile(){
+        File rootFile = new File(this.getClass().getResource("/").getPath()).getParentFile();
+        File[] files = rootFile.listFiles();
+        for(File file : files){
+            if(file.getName().contains("resources")){
+                return file;
+            }
+        }
+        return null;
+    }
+
+    private static String[] getLocationNameArr(String locationName){
+        if(locationName.startsWith("/")){
+            locationName = locationName.substring(1, locationName.length());
+        }
+        return locationName.split("/");
+    }
+
+    public static void searchFiles(File rootFile, String[] path, int level, List<File> result) {
+        File[] files = rootFile.listFiles((FileFilter) new WildcardFileFilter(path[level]));
+        if(files.length > 0){
+            for(File file : files){
+                if(file.isDirectory()){
+                    searchFiles(file, path, level+1, result);
+                } else{
+                    result.add(file);
+                }
+            }
+        }
+    }
+
 }

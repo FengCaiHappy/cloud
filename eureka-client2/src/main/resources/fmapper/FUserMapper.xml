@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<IsFtable>
+    <select id="userInfo.list">
+        select * from userInfo left join userdetaile on userinfo.id = userdetaile.uid where userInfo.id = #{id};
+    </select>
+</IsFtable>

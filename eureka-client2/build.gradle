@@ -24,6 +24,10 @@ dependencies {
     implementation 'mysql:mysql-connector-java:6.0.6'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'org.projectlombok:lombok:1.18.8'
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    // https://mvnrepository.com/artifact/dom4j/dom4j
+    compile group: 'dom4j', name: 'dom4j', version: '1.6.1'
     //compile fileTree(dir:'dirs',includes:['*jar'])
 }
 dependencyManagement {

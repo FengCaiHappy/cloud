@@ -1,9 +1,15 @@
 package com.feng.autoinjection.Utils;
 
+import org.springframework.util.StringUtils;
 import org.yaml.snakeyaml.Yaml;
 
 import javax.servlet.http.HttpServletRequest;
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class Utils {
@@ -58,5 +64,32 @@ public class Utils {
             returnMap.put(name, value);
         }
         return returnMap;
+    }
+
+    public static Map<String, Object> beanTOMap(Object bean){
+        Map<String,Object> map = new HashMap<>();
+        BeanInfo info = null;
+        try {
+            info = Introspector.getBeanInfo(bean.getClass(), Object.class);
+        } catch (IntrospectionException e) {
+            e.printStackTrace();
+        }
+        PropertyDescriptor[] pds = info.getPropertyDescriptors();
+        for(PropertyDescriptor pd : pds) {
+            String key = pd.getName();
+            Object value = null;
+            try {
+                value = pd.getReadMethod().invoke(bean);
+                if(StringUtils.isEmpty(value)){
+                    continue;
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+            map.put(key, value);
+        }
+        return map;
     }
 }

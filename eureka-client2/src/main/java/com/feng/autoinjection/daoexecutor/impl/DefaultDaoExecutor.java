@@ -1,5 +1,6 @@
 package com.feng.autoinjection.daoexecutor.impl;
 
+import com.feng.autoinjection.Utils.Utils;
 import com.feng.autoinjection.dao.DynamicSqlMapper;
 import com.feng.autoinjection.daoexecutor.IDaoExecutor;
 import org.springframework.util.StringUtils;
@@ -19,10 +20,26 @@ public class DefaultDaoExecutor implements IDaoExecutor {
     @Resource
     private DynamicSqlMapper dynamicSqlMapper;
 
+    private Map<String, String> multiTableQuerySQL;
+
+    public DefaultDaoExecutor(){
+        super();
+    }
+
+    public DefaultDaoExecutor(Map<String, String> multiTableQuerySQL){
+        this();
+        this.multiTableQuerySQL = multiTableQuerySQL;
+    }
+
     //todo id?
 
     @Override
     public <T> T queryById(Object param, String tableName) {
+        if(multiTableQuerySQL.get(tableName + ".queryById") != null){
+            Map<String, Object> paramMap = Utils.beanTOMap(param);
+            paramMap.put("tableName", tableName);
+            return (T)dynamicSqlMapper.queryById(paramMap);
+        }
         Map<String, Object> sqlParam = new HashMap<>();
         sqlParam.put("tableName", tableName);
         sqlParam.put("whereSql", beanToSQL(param).get("whereSQL"));
@@ -30,6 +47,11 @@ public class DefaultDaoExecutor implements IDaoExecutor {
     }
 
     public <T> T list(Object param, String tableName){
+        if(multiTableQuerySQL.get(tableName + ".list") != null){
+            Map<String, Object> paramMap = Utils.beanTOMap(param);
+            paramMap.put("tableName", tableName);
+            return (T)dynamicSqlMapper.list(paramMap);
+        }
         Map<String, Object> sqlParam = new HashMap<>();
         sqlParam.put("tableName", tableName);
         sqlParam.put("whereSql", beanToSQL(param).get("whereSQL"));
