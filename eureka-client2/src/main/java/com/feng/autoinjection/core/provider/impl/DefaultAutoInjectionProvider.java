@@ -9,8 +9,6 @@ import com.feng.autoinjection.service.IDynamicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
@@ -48,8 +46,7 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
     @Override
     public Object implMethod(Method method, Object[] args) {
         long startTime = System.currentTimeMillis();
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = servletRequestAttributes.getRequest();
+        HttpServletRequest request = Utils.getHttpRequest();
         String url = request.getRequestURI();
         String[] patterns = url.split("/");
         if(patterns == null || patterns.length < 2){

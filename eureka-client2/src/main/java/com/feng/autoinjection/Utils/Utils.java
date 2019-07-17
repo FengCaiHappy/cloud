@@ -1,6 +1,8 @@
 package com.feng.autoinjection.Utils;
 
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.beans.BeanInfo;
@@ -19,6 +21,11 @@ public class Utils {
             result.add(iter.next());
         }
         return result;
+    }
+
+    public static HttpServletRequest getHttpRequest(){
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        return servletRequestAttributes.getRequest();
     }
 
     public static Map<String, Object> getParameterMap(HttpServletRequest request) {
