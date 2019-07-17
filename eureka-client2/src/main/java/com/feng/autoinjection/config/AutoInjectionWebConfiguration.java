@@ -81,8 +81,8 @@ public class AutoInjectionWebConfiguration {
 
     @Bean
     public IDynamicUrlController dynamicUrlController(){
-        InterfaceProvider dynamicUrlProvider = new DefaultAutoInjectionProvider(getMappers(), getResultHandler());
-        dynamicUrlProvider.setDynamicService(defaultDynamicService());
+        InterfaceProvider dynamicUrlProvider = new DefaultAutoInjectionProvider(defaultDynamicService(), getMappers(),
+                getResultHandler());
         AutoInvoker.setProvider(dynamicUrlProvider);
         return AutoInvoker.getInstance(IDynamicUrlController.class);
     }

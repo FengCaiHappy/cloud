@@ -28,14 +28,11 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
         super();
     }
 
-    public DefaultAutoInjectionProvider(Map<String, Object> mappers, IResultHandler handler){
+    public DefaultAutoInjectionProvider(IDynamicService dynamicService, Map<String, Object> mappers, IResultHandler handler){
         this();
+        this.dynamicService = dynamicService;
         this.mappers = mappers;
         this.handler = handler;
-    }
-
-    public void setDynamicService(IDynamicService dynamicService){
-        this.dynamicService = dynamicService;
     }
 
     @Override
