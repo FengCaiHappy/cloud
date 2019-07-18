@@ -3,6 +3,8 @@ package com.feng.autoinjection.core.provider.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.feng.autoinjection.Utils.Utils;
 import com.feng.autoinjection.controller.IDynamicUrlController;
+import com.feng.autoinjection.core.opratehandler.IAfterHandler;
+import com.feng.autoinjection.core.opratehandler.IPrepareHandler;
 import com.feng.autoinjection.core.provider.InterfaceProvider;
 import com.feng.autoinjection.core.resulthandler.IResultHandler;
 import com.feng.autoinjection.service.IDynamicService;
@@ -21,6 +23,8 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
     private IDynamicService dynamicService;
 
     private Map<String, Object> mappers;
+    private Map<String, Object> afterMappers;
+    private Map<String, Object> prepareMappers;
     private IResultHandler handler;
     private ApplicationContext applicationContext;
 
@@ -54,9 +58,22 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
         try {
             Object beanParam = JSONObject.parseObject(JSONObject.toJSONString(params), Class.forName(getFullBeanName(tableName)));
             Method invokeMethod = IDynamicService.class.getDeclaredMethod(methodName, Object.class, String.class);
+
             //todo before
+            IPrepareHandler prepareHandler = (IPrepareHandler)applicationContext.getBean("");
+            if(prepareHandler != null){
+                Method prepareMethod = IPrepareHandler.class.getDeclaredMethod(methodName, Object.class);
+                prepareMethod.invoke(prepareHandler, beanParam);
+            }
+
             Object result = invokeMethod.invoke(dynamicService, beanParam, tableName);
+
             //todo after
+            IAfterHandler afterHandler = (IAfterHandler)applicationContext.getBean("");
+            if(afterHandler != null){
+                Method afterMethod = IAfterHandler.class.getDeclaredMethod(methodName, Object.class);
+                afterMethod.invoke(afterHandler, result);
+            }
 
             //全局结果处理器
             if(handler != null){
