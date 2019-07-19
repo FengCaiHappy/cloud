@@ -167,14 +167,20 @@ public class AutoInjectionConfiguration {
     }
 
     private File getResourcesFile(){
-        File rootFile = new File(this.getClass().getResource("/").getPath()).getParentFile();
+        String classPath = this.getClass().getResource("/").getPath();
+        File rootFile = new File(classPath).getParentFile();
         File[] files = rootFile.listFiles();
+        File result = null;
         for(File file : files){
             if(file.getName().contains("resources")){
-                return file;
+                result = file;
             }
         }
-        return null;
+
+        if(result == null){
+            result = new File(classPath);
+        }
+        return result;
     }
 
     private static String[] getLocationNameArr(String locationName){
