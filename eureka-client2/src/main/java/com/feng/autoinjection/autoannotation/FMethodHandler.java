@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface FPrepare {
-    String name();
+public @interface FMethodHandler {
+    String tableName();
+    String beanName() default "";
 }

@@ -3,6 +3,7 @@ package com.feng.autoinjection.config;
 import com.feng.autoinjection.Utils.Utils;
 import com.feng.autoinjection.controller.IDynamicUrlController;
 import com.feng.autoinjection.core.autoinvoker.AutoInvoker;
+import com.feng.autoinjection.core.bean.QuickList;
 import com.feng.autoinjection.core.provider.InterfaceProvider;
 import com.feng.autoinjection.core.provider.impl.DefaultAutoInjectionProvider;
 import com.feng.autoinjection.core.resulthandler.IResultHandler;
@@ -32,13 +33,17 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import java.io.File;
 import java.io.FileFilter;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 @Configuration
-public class AutoInjectionWebConfiguration {
+public class AutoInjectionConfiguration {
 
-    private Logger logger = LoggerFactory.getLogger(AutoInjectionWebConfiguration.class);
+    private Logger logger = LoggerFactory.getLogger(AutoInjectionConfiguration.class);
 
     private String[] defaultUrls = {"index", "add", "delete", "update", "list", "queryById"};
 
@@ -52,7 +57,7 @@ public class AutoInjectionWebConfiguration {
 
     private static final String XMLTAG = "IsFtable";
 
-    private Map<String, Object> mappers;
+    private QuickList mappers;
 
     private Map<String, String> multiTableQuerySQL;
 
@@ -81,7 +86,7 @@ public class AutoInjectionWebConfiguration {
 
     @Bean
     public IDynamicUrlController dynamicUrlController(){
-        InterfaceProvider dynamicUrlProvider = new DefaultAutoInjectionProvider(defaultDynamicService(), getMappers(),
+        InterfaceProvider dynamicUrlProvider = new DefaultAutoInjectionProvider(applicationContext, defaultDynamicService(), getMappers(),
                 getResultHandler());
         AutoInvoker.setProvider(dynamicUrlProvider);
         return AutoInvoker.getInstance(IDynamicUrlController.class);
@@ -89,8 +94,7 @@ public class AutoInjectionWebConfiguration {
 
     @Bean
     public void setDynamicUrl(){
-        Map<String, Object> mappers = getMappers();
-        List<String> tableNames = Utils.getKeyFromMap(mappers);
+        List<String> tableNames = Utils.getKeyFromMap(getMappers());
         for(String tableName : tableNames){
             for(int i = 0, len = defaultUrls.length; i < len; i++){
                 PatternsRequestCondition patterns = new PatternsRequestCondition("/" + tableName + "/" + defaultUrls[i]);
@@ -118,11 +122,11 @@ public class AutoInjectionWebConfiguration {
         }
     }
 
-    private Map<String, Object> getMappers(){
+    private QuickList getMappers(){
         if(mappers != null){
             return mappers;
         }
-        return mappers = AutoAnnotationScanner.getBeanTableMapper(StringUtils.isEmpty(basePackage) ? DEFAULTPACKAGE:basePackage);
+        return mappers = Utils.getBeanTableMapper(StringUtils.isEmpty(basePackage) ? DEFAULTPACKAGE:basePackage);
     }
 
     public void getMultiTableQuerySQL(){

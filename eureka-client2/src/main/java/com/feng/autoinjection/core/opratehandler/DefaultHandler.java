@@ -1,54 +1,58 @@
 package com.feng.autoinjection.core.opratehandler;
 
-public class DefaultHandler<T> implements IPrepareHandler<T>, IAfterHandler<T>{
+import java.util.ArrayList;
+import java.util.List;
+
+public class DefaultHandler<T> implements IMethodHandler<T>{
+
 
     @Override
-    public <T> T prepareList(T obj) {
+    public void prepareList(T obj) {
+
+    }
+
+    @Override
+    public <T1> List<T1> afterList(ArrayList<T1> obj) {
         return obj;
     }
 
     @Override
-    public <T> T prepareQueryById(T obj) {
+    public void prepareQueryById(T obj) {
+
+    }
+
+    @Override
+    public <T1> T1 afterQueryById(T1 obj) {
         return obj;
     }
 
     @Override
-    public <T> T prepareUpdate(T obj) {
+    public void prepareUpdate(T obj) {
+
+    }
+
+    @Override
+    public <T1> T1 afterUpdate(T1 obj) {
         return obj;
     }
 
     @Override
-    public <T> T prepareAdd(T obj) {
+    public void prepareAdd(T obj) {
+
+    }
+
+    @Override
+    public <T1> T1 afterAdd(T1 obj) {
         return obj;
     }
 
     @Override
-    public <T> T prepareDelete(T obj) {
-        return obj;
+    public void prepareDelete(T obj) {
+
     }
 
     @Override
-    public <T> T afterList(T obj) {
-        return obj;
-    }
-
-    @Override
-    public <T> T afterQueryById(T obj) {
-        return obj;
-    }
-
-    @Override
-    public <T> T afterUpdate(T obj) {
-        return obj;
-    }
-
-    @Override
-    public <T> T afterAdd(T obj) {
-        return obj;
-    }
-
-    @Override
-    public <T> T afterDelete(T obj) {
+    public <T1> T1 afterDelete(T1 obj) {
         return obj;
     }
 }

@@ -3,8 +3,8 @@ package com.feng.autoinjection.core.provider.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.feng.autoinjection.Utils.Utils;
 import com.feng.autoinjection.controller.IDynamicUrlController;
-import com.feng.autoinjection.core.opratehandler.IAfterHandler;
-import com.feng.autoinjection.core.opratehandler.IPrepareHandler;
+import com.feng.autoinjection.core.bean.QuickList;
+import com.feng.autoinjection.core.opratehandler.IMethodHandler;
 import com.feng.autoinjection.core.provider.InterfaceProvider;
 import com.feng.autoinjection.core.resulthandler.IResultHandler;
 import com.feng.autoinjection.service.IDynamicService;
@@ -22,9 +22,7 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
 
     private IDynamicService dynamicService;
 
-    private Map<String, Object> mappers;
-    private Map<String, Object> afterMappers;
-    private Map<String, Object> prepareMappers;
+    private QuickList mappers;
     private IResultHandler handler;
     private ApplicationContext applicationContext;
 
@@ -32,8 +30,9 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
         super();
     }
 
-    public DefaultAutoInjectionProvider(IDynamicService dynamicService, Map<String, Object> mappers, IResultHandler handler){
+    public DefaultAutoInjectionProvider(ApplicationContext applicationContext, IDynamicService dynamicService, QuickList mappers, IResultHandler handler){
         this();
+        this.applicationContext = applicationContext;
         this.dynamicService = dynamicService;
         this.mappers = mappers;
         this.handler = handler;
@@ -59,20 +58,17 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
             Object beanParam = JSONObject.parseObject(JSONObject.toJSONString(params), Class.forName(getFullBeanName(tableName)));
             Method invokeMethod = IDynamicService.class.getDeclaredMethod(methodName, Object.class, String.class);
 
-            //todo before
-            IPrepareHandler prepareHandler = (IPrepareHandler)applicationContext.getBean("");
-            if(prepareHandler != null){
-                Method prepareMethod = IPrepareHandler.class.getDeclaredMethod(methodName, Object.class);
-                prepareMethod.invoke(prepareHandler, beanParam);
+            IMethodHandler methodHandler = (IMethodHandler)applicationContext.getBean(mappers.getBean(tableName).getMethodHandlerName());
+            if(methodHandler != null){
+                Method prepareMethod = IMethodHandler.class.getDeclaredMethod("prepare"+ Utils.upperFirst(methodName), Object.class);
+                prepareMethod.invoke(methodHandler, beanParam);
             }
 
             Object result = invokeMethod.invoke(dynamicService, beanParam, tableName);
 
-            //todo after
-            IAfterHandler afterHandler = (IAfterHandler)applicationContext.getBean("");
-            if(afterHandler != null){
-                Method afterMethod = IAfterHandler.class.getDeclaredMethod(methodName, Object.class);
-                afterMethod.invoke(afterHandler, result);
+            if(methodHandler != null){
+                Method afterMethod = IMethodHandler.class.getDeclaredMethod("after"+ Utils.upperFirst(methodName), result.getClass());
+                afterMethod.invoke(methodHandler, result);
             }
 
             //全局结果处理器
@@ -88,7 +84,7 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
     }
 
     private String getFullBeanName(String beanName){
-        return mappers.get(beanName).toString();
+        return mappers.getBean(beanName).getMapperBeaName();
     }
 
 }
