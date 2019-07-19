@@ -7,13 +7,17 @@
     <facet type="web" name="Web">
       <configuration>
         <webroots />
+        <sourceRoots />
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output-test url="file://$MODULE_DIR$/../../../eureka-client1/out/test/classes" />
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../../eureka-client1/src/test" />
+    <content url="file://$MODULE_DIR$/../../../eureka-client1/src/test">
+      <sourceFolder url="file://$MODULE_DIR$/../../../eureka-client1/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../eureka-client1/src/test/resources" type="java-test-resource" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="eureka-client1_main" />
