@@ -18,6 +18,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ import java.util.Map;
 
 
 @Configuration
+@MapperScan("com.feng.autoinjection.dao")
 public class AutoInjectionConfiguration {
 
     private Logger logger = LoggerFactory.getLogger(AutoInjectionConfiguration.class);
