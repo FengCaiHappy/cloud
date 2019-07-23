@@ -9,6 +9,8 @@
         <if test="name != '' and name != null">
             and userInfo.name = #{name}
         </if>
+        order     by userinfo.id
+        desc
     </select>
 
     <select id="userInfo.get">

@@ -53,10 +53,10 @@ public class AutoInjectionConfiguration {
 
     private String[] defaultUrls = {"index", "add", "delete", "update", "list", "queryById"};
 
-    @Value("${ftables.xml-location}")
+    @Value("${ftables.xml-location:}")
     private String locationName;
 
-    @Value("${ftables.base-package}")
+    @Value("${ftables.base-package:}")
     private String basePackage;
 
     private static final String DEFAULTPACKAGE = "com";
@@ -140,7 +140,9 @@ public class AutoInjectionConfiguration {
             return;
         }
         if(StringUtils.isEmpty(locationName)|| "/".equals(locationName.trim())){
-            throw new NullPointerException("the path is null");
+            logger.info("Do no set ftables.xml-location, only can operation single table");
+            multiTableQuerySQL = new HashMap<>();
+            return;
         }
 
         List<File> result = new ArrayList<>();
@@ -163,12 +165,19 @@ public class AutoInjectionConfiguration {
                 while(iterator.hasNext()){
                     List<SqlNode> list = new ArrayList<>();
                     String key = "";
+                    String orderBy = "";
                     Element childElement = (Element) iterator.next();
                     List<Attribute> attributes = childElement.attributes();
                     for(Attribute attribute : attributes){
                         //"tagName:" + childElement.getName()
                         key = attribute.getValue();
-                        StaticTextSqlNode staticTextSqlNode = new StaticTextSqlNode(childElement.getTextTrim());
+                        String text = childElement.getTextTrim();
+                        String orderByStr = "order by";
+                        if(text.contains(orderByStr)){
+                            orderBy = text.substring(text.indexOf(orderByStr), text.length());
+                            text = text.substring(0, text.indexOf(orderByStr));
+                        }
+                        StaticTextSqlNode staticTextSqlNode = new StaticTextSqlNode(text);
                         list.add(staticTextSqlNode);
                     }
                     Iterator childIterator = childElement.elementIterator();
@@ -186,6 +195,10 @@ public class AutoInjectionConfiguration {
                         IfSqlNode ifSqlNode = new IfSqlNode(mixedSqlNode, nodeKey);
                         list.add(ifSqlNode);
                         StaticTextSqlNode sqlNode = new StaticTextSqlNode(" ");
+                        list.add(sqlNode);
+                    }
+                    if(!StringUtils.isEmpty(orderBy)){
+                        StaticTextSqlNode sqlNode = new StaticTextSqlNode(orderBy);
                         list.add(sqlNode);
                     }
                     multiTableQuerySQL.put(key, list);

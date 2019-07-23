@@ -52,6 +52,9 @@ public class ReBuildSQLPlugin implements Interceptor {
                 }
             }
         }
+        if(paramMap == null){
+            return invocation.proceed();
+        }
         int INDEX_MS = 0;
         MappedStatement ms = (MappedStatement)args[INDEX_MS];
         String id = ms.getId();
