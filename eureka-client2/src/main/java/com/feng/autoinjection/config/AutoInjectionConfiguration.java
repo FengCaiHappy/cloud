@@ -13,6 +13,10 @@ import com.feng.autoinjection.mybatisplugin.ReBuildSQLPlugin;
 import com.feng.autoinjection.service.IDynamicService;
 import com.feng.autoinjection.service.impl.DefaultDynamicService;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.apache.ibatis.scripting.xmltags.IfSqlNode;
+import org.apache.ibatis.scripting.xmltags.MixedSqlNode;
+import org.apache.ibatis.scripting.xmltags.SqlNode;
+import org.apache.ibatis.scripting.xmltags.StaticTextSqlNode;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -61,7 +65,7 @@ public class AutoInjectionConfiguration {
 
     private QuickList mappers;
 
-    private Map<String, String> multiTableQuerySQL;
+    private Map<String, List<SqlNode>> multiTableQuerySQL;
 
     @Autowired
     private RequestMappingHandlerMapping requestMappingHandlerMapping;
@@ -157,12 +161,34 @@ public class AutoInjectionConfiguration {
             if(XMLTAG.equals(rootElement.getName())){
                 Iterator iterator = rootElement.elementIterator();
                 while(iterator.hasNext()){
+                    List<SqlNode> list = new ArrayList<>();
+                    String key = "";
                     Element childElement = (Element) iterator.next();
                     List<Attribute> attributes = childElement.attributes();
                     for(Attribute attribute : attributes){
                         //"tagName:" + childElement.getName()
-                        multiTableQuerySQL.put(attribute.getValue(), childElement.getTextTrim());
+                        key = attribute.getValue();
+                        StaticTextSqlNode staticTextSqlNode = new StaticTextSqlNode(childElement.getTextTrim());
+                        list.add(staticTextSqlNode);
                     }
+                    Iterator childIterator = childElement.elementIterator();
+                    while (childIterator.hasNext()){
+                        Element nodeElement = (Element)childIterator.next();
+                        List<Attribute> nodeAttriutes = nodeElement.attributes();
+                        String nodeKey = "";
+                        for(Attribute attribute : nodeAttriutes){
+                            nodeKey = attribute.getValue();
+                        }
+                        StaticTextSqlNode staticTextSqlNode = new StaticTextSqlNode(nodeElement.getTextTrim());
+                        List<SqlNode> sqlNodeList = new ArrayList<>();
+                        sqlNodeList.add(staticTextSqlNode);
+                        MixedSqlNode mixedSqlNode = new MixedSqlNode(sqlNodeList);
+                        IfSqlNode ifSqlNode = new IfSqlNode(mixedSqlNode, nodeKey);
+                        list.add(ifSqlNode);
+                        StaticTextSqlNode sqlNode = new StaticTextSqlNode(" ");
+                        list.add(sqlNode);
+                    }
+                    multiTableQuerySQL.put(key, list);
                 }
             }
         }

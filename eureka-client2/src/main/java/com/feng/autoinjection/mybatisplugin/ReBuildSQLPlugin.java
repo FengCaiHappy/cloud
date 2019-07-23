@@ -5,15 +5,21 @@ import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.mapping.SqlSource;
-import org.apache.ibatis.plugin.*;
+import org.apache.ibatis.plugin.Interceptor;
+import org.apache.ibatis.plugin.Intercepts;
+import org.apache.ibatis.plugin.Invocation;
+import org.apache.ibatis.plugin.Plugin;
+import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.scripting.xmltags.DynamicSqlSource;
-import org.apache.ibatis.scripting.xmltags.TextSqlNode;
+import org.apache.ibatis.scripting.xmltags.MixedSqlNode;
+import org.apache.ibatis.scripting.xmltags.SqlNode;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -24,13 +30,13 @@ import java.util.Properties;
 public class ReBuildSQLPlugin implements Interceptor {
     private Logger logger = LoggerFactory.getLogger(ReBuildSQLPlugin.class);
 
-    private Map<String, String> multiTableQuerySQL;
+    private Map<String, List<SqlNode>> multiTableQuerySQL;
 
     public ReBuildSQLPlugin(){
         super();
     }
 
-    public ReBuildSQLPlugin(Map<String, String> multiTableQuerySQL){
+    public ReBuildSQLPlugin(Map<String, List<SqlNode>> multiTableQuerySQL){
         this();
         this.multiTableQuerySQL = multiTableQuerySQL;
     }
@@ -48,14 +54,14 @@ public class ReBuildSQLPlugin implements Interceptor {
         }
         int INDEX_MS = 0;
         MappedStatement ms = (MappedStatement)args[INDEX_MS];
-        String id =  ms.getId();
+        String id = ms.getId();
         String methodName = id.substring(id.lastIndexOf("."), id.length());
-        String sql = multiTableQuerySQL.get(paramMap.get("tableName") + methodName);
+        List<SqlNode> sql = multiTableQuerySQL.get(paramMap.get("tableName") + methodName);
         if(!StringUtils.isEmpty(sql)){
             SqlCommandType sqlCommandType = ms.getSqlCommandType();
             logger.info("-->intercept sqlCommandType: "+sqlCommandType);
-            TextSqlNode textSqlNode = new TextSqlNode(sql);
-            DynamicSqlSource dynamicSqlSource = new DynamicSqlSource(ms.getConfiguration(), textSqlNode);
+            MixedSqlNode mixedSqlNode = new MixedSqlNode(sql);
+            DynamicSqlSource dynamicSqlSource = new DynamicSqlSource(ms.getConfiguration(), mixedSqlNode);
             MappedStatement newMs = copyFromMappedStatement(ms, dynamicSqlSource);
             args[INDEX_MS] = newMs;
         }

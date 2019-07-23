@@ -3,6 +3,7 @@ package com.feng.autoinjection.daoexecutor.impl;
 import com.feng.autoinjection.Utils.Utils;
 import com.feng.autoinjection.dao.DynamicSqlMapper;
 import com.feng.autoinjection.daoexecutor.IDaoExecutor;
+import org.apache.ibatis.scripting.xmltags.SqlNode;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -13,6 +14,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DefaultDaoExecutor implements IDaoExecutor {
@@ -20,13 +22,13 @@ public class DefaultDaoExecutor implements IDaoExecutor {
     @Resource
     private DynamicSqlMapper dynamicSqlMapper;
 
-    private Map<String, String> multiTableQuerySQL;
+    private Map<String, List<SqlNode>> multiTableQuerySQL;
 
     public DefaultDaoExecutor(){
         super();
     }
 
-    public DefaultDaoExecutor(Map<String, String> multiTableQuerySQL){
+    public DefaultDaoExecutor(Map<String, List<SqlNode>> multiTableQuerySQL){
         this();
         this.multiTableQuerySQL = multiTableQuerySQL;
     }

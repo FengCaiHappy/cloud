@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <IsFtable>
     <select id="userInfo.list">
-        select * from userInfo left join userdetaile on userinfo.id = userdetaile.uid where userInfo.id = #{id};
+        select * from userInfo left join userdetaile on userinfo.id = userdetaile.uid
+        where 1 = 1
+        <if test="id != '' and id != null">
+            and userInfo.id = #{id}
+        </if>
+        <if test="name != '' and name != null">
+            and userInfo.name = #{name}
+        </if>
+    </select>
+
+    <select id="userInfo.get">
+        select * from userInfo left join userdetaile on userinfo.id = userdetaile.uid
+        where 1 = 1
+        <if test="id != '' and id != null">
+            and userInfo.id = #{id}
+        </if>
+        <if test="name != '' and name != null">
+            and userInfo.name = #{name}
+        </if>
     </select>
 </IsFtable>
