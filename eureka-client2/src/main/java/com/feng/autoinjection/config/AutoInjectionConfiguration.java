@@ -13,10 +13,10 @@ import com.feng.autoinjection.mybatisplugin.ReBuildSQLPlugin;
 import com.feng.autoinjection.service.IDynamicService;
 import com.feng.autoinjection.service.impl.DefaultDynamicService;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
-import org.apache.ibatis.scripting.xmltags.IfSqlNode;
+import org.apache.ibatis.parsing.XNode;
+import org.apache.ibatis.parsing.XPathParser;
 import org.apache.ibatis.scripting.xmltags.MixedSqlNode;
-import org.apache.ibatis.scripting.xmltags.SqlNode;
-import org.apache.ibatis.scripting.xmltags.StaticTextSqlNode;
+import org.apache.ibatis.scripting.xmltags.XMLScriptBuilder;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -38,6 +38,8 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,7 +68,7 @@ public class AutoInjectionConfiguration {
 
     private QuickList mappers;
 
-    private Map<String, List<SqlNode>> multiTableQuerySQL;
+    private Map<String, MixedSqlNode> multiTableQuerySQL;
 
     @Autowired
     private RequestMappingHandlerMapping requestMappingHandlerMapping;
@@ -136,24 +138,39 @@ public class AutoInjectionConfiguration {
         return mappers = Utils.getBeanTableMapper(StringUtils.isEmpty(basePackage) ? DEFAULTPACKAGE:basePackage);
     }
 
+    private MixedSqlNode getSqlNode(File file){
+        try {
+            InputStream inputStream = new FileInputStream(file);
+            XPathParser xPathParser = new XPathParser(inputStream);
+            XNode allNode = xPathParser.evalNode("/"+XMLTAG);
+            org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+            for(XNode xNode : allNode.getChildren()){
+                XMLScriptBuilder xmlScriptBuilder = new XMLScriptBuilder(configuration, xNode);
+                Method method = XMLScriptBuilder.class.getDeclaredMethod("parseDynamicTags", XNode.class);
+                method.setAccessible(true);
+                return (MixedSqlNode)method.invoke(xmlScriptBuilder, xNode);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public void getMultiTableQuerySQL(){
         if(multiTableQuerySQL != null){
             return;
         }
+        multiTableQuerySQL = new HashMap<>();
         if(StringUtils.isEmpty(locationName)|| "/".equals(locationName.trim())){
             logger.info("Do no set ftables.xml-location, only can operation single table");
-            multiTableQuerySQL = new HashMap<>();
             return;
         }
 
         List<File> result = new ArrayList<>();
         searchFiles(getResourcesFile(), getLocationNameArr(locationName), 0, result);
 
-        SAXReader reader = new SAXReader();
-
-        multiTableQuerySQL = new HashMap<>();
-
         for(File file : result){
+            SAXReader reader = new SAXReader();
             Document document = null;
             try {
                 document = reader.read(file);
@@ -162,47 +179,11 @@ public class AutoInjectionConfiguration {
             }
             Element rootElement = document.getRootElement();
             if(XMLTAG.equals(rootElement.getName())){
-                Iterator iterator = rootElement.elementIterator();
+                Iterator<Element> iterator = rootElement.elementIterator();
                 while(iterator.hasNext()){
-                    List<SqlNode> list = new ArrayList<>();
-                    String key = "";
-                    String orderBy = "";
-                    Element childElement = (Element) iterator.next();
+                    Element childElement = iterator.next();
                     List<Attribute> attributes = childElement.attributes();
-                    for(Attribute attribute : attributes){
-                        //"tagName:" + childElement.getName()
-                        key = attribute.getValue();
-                        String text = childElement.getTextTrim();
-                        String orderByStr = "order by";
-                        if(text.contains(orderByStr)){
-                            orderBy = text.substring(text.indexOf(orderByStr), text.length());
-                            text = text.substring(0, text.indexOf(orderByStr));
-                        }
-                        StaticTextSqlNode staticTextSqlNode = new StaticTextSqlNode(text);
-                        list.add(staticTextSqlNode);
-                    }
-                    Iterator childIterator = childElement.elementIterator();
-                    while (childIterator.hasNext()){
-                        Element nodeElement = (Element)childIterator.next();
-                        List<Attribute> nodeAttriutes = nodeElement.attributes();
-                        String nodeKey = "";
-                        for(Attribute attribute : nodeAttriutes){
-                            nodeKey = attribute.getValue();
-                        }
-                        StaticTextSqlNode staticTextSqlNode = new StaticTextSqlNode(nodeElement.getTextTrim());
-                        List<SqlNode> sqlNodeList = new ArrayList<>();
-                        sqlNodeList.add(staticTextSqlNode);
-                        MixedSqlNode mixedSqlNode = new MixedSqlNode(sqlNodeList);
-                        IfSqlNode ifSqlNode = new IfSqlNode(mixedSqlNode, nodeKey);
-                        list.add(ifSqlNode);
-                        StaticTextSqlNode sqlNode = new StaticTextSqlNode(" ");
-                        list.add(sqlNode);
-                    }
-                    if(!StringUtils.isEmpty(orderBy)){
-                        StaticTextSqlNode sqlNode = new StaticTextSqlNode(orderBy);
-                        list.add(sqlNode);
-                    }
-                    multiTableQuerySQL.put(key, list);
+                    multiTableQuerySQL.put(attributes.get(0).getValue(), getSqlNode(file));
                 }
             }
         }

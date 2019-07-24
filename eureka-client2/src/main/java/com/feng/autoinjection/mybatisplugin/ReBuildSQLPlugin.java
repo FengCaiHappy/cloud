@@ -12,14 +12,12 @@ import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.scripting.xmltags.DynamicSqlSource;
 import org.apache.ibatis.scripting.xmltags.MixedSqlNode;
-import org.apache.ibatis.scripting.xmltags.SqlNode;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -30,13 +28,13 @@ import java.util.Properties;
 public class ReBuildSQLPlugin implements Interceptor {
     private Logger logger = LoggerFactory.getLogger(ReBuildSQLPlugin.class);
 
-    private Map<String, List<SqlNode>> multiTableQuerySQL;
+    private Map<String, MixedSqlNode> multiTableQuerySQL;
 
     public ReBuildSQLPlugin(){
         super();
     }
 
-    public ReBuildSQLPlugin(Map<String, List<SqlNode>> multiTableQuerySQL){
+    public ReBuildSQLPlugin(Map<String, MixedSqlNode> multiTableQuerySQL){
         this();
         this.multiTableQuerySQL = multiTableQuerySQL;
     }
@@ -59,12 +57,11 @@ public class ReBuildSQLPlugin implements Interceptor {
         MappedStatement ms = (MappedStatement)args[INDEX_MS];
         String id = ms.getId();
         String methodName = id.substring(id.lastIndexOf("."), id.length());
-        List<SqlNode> sql = multiTableQuerySQL.get(paramMap.get("tableName") + methodName);
+        MixedSqlNode sql = multiTableQuerySQL.get(paramMap.get("tableName") + methodName);
         if(!StringUtils.isEmpty(sql)){
             SqlCommandType sqlCommandType = ms.getSqlCommandType();
             logger.info("-->intercept sqlCommandType: "+sqlCommandType);
-            MixedSqlNode mixedSqlNode = new MixedSqlNode(sql);
-            DynamicSqlSource dynamicSqlSource = new DynamicSqlSource(ms.getConfiguration(), mixedSqlNode);
+            DynamicSqlSource dynamicSqlSource = new DynamicSqlSource(ms.getConfiguration(), sql);
             MappedStatement newMs = copyFromMappedStatement(ms, dynamicSqlSource);
             args[INDEX_MS] = newMs;
         }
