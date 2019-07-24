@@ -26,7 +26,7 @@ public class PageHelperExecutor implements CommandLineRunner {
     private ReBuildSQLPlugin reBuildSQLPlugin;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         setPageHelperProxy();
     }
 
@@ -34,16 +34,21 @@ public class PageHelperExecutor implements CommandLineRunner {
         List<Interceptor> interceptors = SqlSessionFactory.getConfiguration().getInterceptors();
         Interceptor pageInterceptor;
         InterceptorChain interceptorChain = new InterceptorChain();
+        boolean needReset = false;
         for(Interceptor interceptor : interceptors){
             if("PageInterceptor".equals(interceptor.getClass().getSimpleName())){
-                System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                 postProcessBeforeInitialization(interceptor);
                 pageInterceptor = (Interceptor)new PageHelperProxy(interceptor).getProxyInstance(reBuildSQLPlugin);
                 interceptorChain.addInterceptor(pageInterceptor);
+                needReset = true;
             } else {
                 interceptorChain.addInterceptor(interceptor);
             }
         }
+        if(!needReset){
+            return;
+        }
+
         Class objClass = SqlSessionFactory.getConfiguration().getClass();
         Field[] fields = objClass.getDeclaredFields();
         for (int i=0;i<fields.length;i++){
