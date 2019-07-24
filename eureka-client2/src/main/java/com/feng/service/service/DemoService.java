@@ -32,4 +32,9 @@ public class DemoService extends DefaultHandler<UserInfo> {
         System.out.println("哈哈哈哈哈哈哈");
         return obj;
     }
+
+    @Override
+    public <UserInfo> UserInfo afterQueryById(UserInfo UserInfo) {
+        return UserInfo;
+    }
 }

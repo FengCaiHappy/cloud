@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
@@ -44,9 +45,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-
 @Configuration
 @MapperScan("com.feng.autoinjection.dao")
+@ComponentScan("com.feng.autoinjection.config")
 public class AutoInjectionConfiguration {
 
     private Logger logger = LoggerFactory.getLogger(AutoInjectionConfiguration.class);
@@ -85,7 +86,7 @@ public class AutoInjectionConfiguration {
     }
 
     @Bean
-    public ReBuildSQLPlugin DemoPlugin(){
+    public ReBuildSQLPlugin reBuildSQLPlugin(){
         getMultiTableQuerySQL();
         return new ReBuildSQLPlugin(multiTableQuerySQL);
     }

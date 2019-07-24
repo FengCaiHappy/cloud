@@ -29,6 +29,9 @@ dependencies {
     // https://mvnrepository.com/artifact/dom4j/dom4j
     compile group: 'dom4j', name: 'dom4j', version: '1.6.1'
     //compile fileTree(dir:'dirs',includes:['*jar'])
+    // https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter
+    //compile group: 'com.github.pagehelper', name: 'pagehelper-spring-boot-starter', version: '1.2.12'
+
 }
 dependencyManagement {
     imports {
