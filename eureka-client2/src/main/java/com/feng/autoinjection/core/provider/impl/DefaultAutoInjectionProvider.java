@@ -55,7 +55,7 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
         String tableName = patterns[1], methodName = patterns[2];
         Map<String, Object> params = Utils.getParameterMap(request);
         try {
-            Object beanParam = JSONObject.parseObject(JSONObject.toJSONString(params), Class.forName(getFullBeanName(tableName)));
+            Object beanParam = JSONObject.parseObject(JSONObject.toJSONString(params), Class.forName(getBeanFullName(tableName)));
             Method invokeMethod = IDynamicService.class.getDeclaredMethod(methodName, Object.class, String.class);
 
             IMethodHandler methodHandler = (IMethodHandler)getHandlerBean(tableName);
@@ -85,16 +85,15 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
 
     private Object getHandlerBean(String tableName){
         String name = mappers.getBean(tableName).getMethodHandlerName();
-        Object handlerBean = null;
         try{
-            handlerBean = applicationContext.getBean(name);
+            return applicationContext.getBean(name);
         }catch (Exception e){
             logger.info("can not found method handler");
         }
-        return handlerBean;
+        return null;
     }
 
-    private String getFullBeanName(String beanName){
+    private String getBeanFullName(String beanName){
         return mappers.getBean(beanName).getMapperBeaName();
     }
 

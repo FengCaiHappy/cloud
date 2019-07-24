@@ -12,7 +12,7 @@ public class DefaultHandler<T> implements IMethodHandler<T>{
     }
 
     @Override
-    public <T> List<T> afterList(ArrayList<T> obj) {
+    public List<T> afterList(ArrayList<T> obj) {
         return obj;
     }
 
@@ -22,7 +22,7 @@ public class DefaultHandler<T> implements IMethodHandler<T>{
     }
 
     @Override
-    public <T> T afterQueryById(T obj) {
+    public T afterQueryById(T obj) {
         return obj;
     }
 
@@ -32,7 +32,7 @@ public class DefaultHandler<T> implements IMethodHandler<T>{
     }
 
     @Override
-    public <T> T afterUpdate(T obj) {
+    public T afterUpdate(T obj) {
         return obj;
     }
 
@@ -42,7 +42,7 @@ public class DefaultHandler<T> implements IMethodHandler<T>{
     }
 
     @Override
-    public <T> T afterAdd(T obj) {
+    public T afterAdd(T obj) {
         return obj;
     }
 
@@ -52,7 +52,7 @@ public class DefaultHandler<T> implements IMethodHandler<T>{
     }
 
     @Override
-    public <T> T afterDelete(T obj) {
+    public T afterDelete(T obj) {
         return obj;
     }
 }
