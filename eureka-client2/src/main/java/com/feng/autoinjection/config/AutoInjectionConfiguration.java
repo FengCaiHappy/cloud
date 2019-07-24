@@ -68,7 +68,7 @@ public class AutoInjectionConfiguration {
 
     private QuickList mappers;
 
-    private Map<String, MixedSqlNode> multiTableQuerySQL;
+    private Map<String, MixedSqlNode> customSQL;
 
     @Autowired
     private RequestMappingHandlerMapping requestMappingHandlerMapping;
@@ -83,14 +83,14 @@ public class AutoInjectionConfiguration {
 
     @Bean
     public IDaoExecutor daoExecutor(){
-        getMultiTableQuerySQL();
-        return new DefaultDaoExecutor(multiTableQuerySQL);
+        getCustomSQL();
+        return new DefaultDaoExecutor(customSQL);
     }
 
     @Bean
     public ReBuildSQLPlugin reBuildSQLPlugin(){
-        getMultiTableQuerySQL();
-        return new ReBuildSQLPlugin(multiTableQuerySQL);
+        getCustomSQL();
+        return new ReBuildSQLPlugin(customSQL);
     }
 
     @Bean
@@ -156,11 +156,11 @@ public class AutoInjectionConfiguration {
         return null;
     }
 
-    public void getMultiTableQuerySQL(){
-        if(multiTableQuerySQL != null){
+    public void getCustomSQL(){
+        if(customSQL != null){
             return;
         }
-        multiTableQuerySQL = new HashMap<>();
+        customSQL = new HashMap<>();
         if(StringUtils.isEmpty(locationName)|| "/".equals(locationName.trim())){
             logger.info("Do no set ftables.xml-location, only can operation single table");
             return;
@@ -183,7 +183,7 @@ public class AutoInjectionConfiguration {
                 while(iterator.hasNext()){
                     Element childElement = iterator.next();
                     List<Attribute> attributes = childElement.attributes();
-                    multiTableQuerySQL.put(attributes.get(0).getValue(), getSqlNode(file));
+                    customSQL.put(attributes.get(0).getValue(), getSqlNode(file));
                 }
             }
         }

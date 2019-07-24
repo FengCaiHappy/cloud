@@ -28,15 +28,15 @@ import java.util.Properties;
 public class ReBuildSQLPlugin implements Interceptor {
     private Logger logger = LoggerFactory.getLogger(ReBuildSQLPlugin.class);
 
-    private Map<String, MixedSqlNode> multiTableQuerySQL;
+    private Map<String, MixedSqlNode> customSQL;
 
     public ReBuildSQLPlugin(){
         super();
     }
 
-    public ReBuildSQLPlugin(Map<String, MixedSqlNode> multiTableQuerySQL){
+    public ReBuildSQLPlugin(Map<String, MixedSqlNode> customSQL){
         this();
-        this.multiTableQuerySQL = multiTableQuerySQL;
+        this.customSQL = customSQL;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ReBuildSQLPlugin implements Interceptor {
         MappedStatement ms = (MappedStatement)args[INDEX_MS];
         String id = ms.getId();
         String methodName = id.substring(id.lastIndexOf("."), id.length());
-        MixedSqlNode sql = multiTableQuerySQL.get(paramMap.get("tableName") + methodName);
+        MixedSqlNode sql = customSQL.get(paramMap.get("tableName") + methodName);
         if(!StringUtils.isEmpty(sql)){
             SqlCommandType sqlCommandType = ms.getSqlCommandType();
             logger.info("-->intercept sqlCommandType: "+sqlCommandType);
