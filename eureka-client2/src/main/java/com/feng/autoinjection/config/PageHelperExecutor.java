@@ -32,13 +32,12 @@ public class PageHelperExecutor implements CommandLineRunner {
 
     private void setPageHelperProxy(){
         List<Interceptor> interceptors = SqlSessionFactory.getConfiguration().getInterceptors();
-        Interceptor pageInterceptor;
         InterceptorChain interceptorChain = new InterceptorChain();
         boolean needReset = false;
         for(Interceptor interceptor : interceptors){
             if("PageInterceptor".equals(interceptor.getClass().getSimpleName())){
                 postProcessBeforeInitialization(interceptor);
-                pageInterceptor = (Interceptor)new PageHelperProxy(interceptor).getProxyInstance(reBuildSQLPlugin);
+                Interceptor pageInterceptor = (Interceptor)new PageHelperProxy(interceptor).getProxyInstance(reBuildSQLPlugin);
                 interceptorChain.addInterceptor(pageInterceptor);
                 needReset = true;
             } else {
