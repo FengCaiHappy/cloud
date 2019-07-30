@@ -72,6 +72,8 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
                 Class clazz;
                 if(result instanceof List){
                     clazz = ArrayList.class;
+                } else if(result instanceof Integer){
+                    clazz = Integer.class;
                 } else {
                     clazz = Object.class;
                 }
