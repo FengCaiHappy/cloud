@@ -1,6 +1,7 @@
 package com.feng.service.service;
 
-import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,12 +22,14 @@ public class QueryHZW {
     private static void queryHzw(){
         while (true){
             String res = get("https://prod-api.ishuhui.com/ver/a5379534/anime/detail?id=1&type=comics&.json", new HashMap<>());
-            Map<String, Object> resMap = (Map)JSON.parse(res);
+            Gson gson = new GsonBuilder().setDateFormat(DateFormat.DEFAULT)
+                    .create();
+            Map<String, Object> resMap = gson.fromJson(res, Map.class);
             Map<String, Object> data = (Map)resMap.get("data");
             Map<String, Object> comicsIndexes = (Map)data.get("comicsIndexes");
             Map<String, Object> map = (Map)comicsIndexes.get("1");
-            Integer maxNum = Integer.parseInt(map.get("maxNum").toString());
-            if(maxNum > 950){
+            Float maxNum = Float.parseFloat(map.get("maxNum").toString());
+            if(maxNum > 949){
                 JOptionPane.showMessageDialog(null, "【提示】", "海贼王已更新", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }else{
