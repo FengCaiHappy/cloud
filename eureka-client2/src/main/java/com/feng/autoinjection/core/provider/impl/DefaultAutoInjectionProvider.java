@@ -1,6 +1,5 @@
 package com.feng.autoinjection.core.provider.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.feng.autoinjection.Utils.Utils;
 import com.feng.autoinjection.controller.IDynamicUrlController;
 import com.feng.autoinjection.core.bean.QuickList;
@@ -57,7 +56,7 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
         String tableName = patterns[1], methodName = patterns[2];
         Map<String, Object> params = Utils.getParameterMap(request);
         try {
-            Object beanParam = JSONObject.parseObject(JSONObject.toJSONString(params), Class.forName(getBeanFullName(tableName)));
+            Object beanParam = Utils.mapToBean(params, Class.forName(getBeanFullName(tableName)));
             Method invokeMethod = IDynamicService.class.getDeclaredMethod(methodName, Object.class, String.class);
 
             IMethodHandler methodHandler = (IMethodHandler)getHandlerBean(tableName);
@@ -78,7 +77,7 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
                     clazz = Object.class;
                 }
                 Method afterMethod = IMethodHandler.class.getDeclaredMethod("after"+ Utils.upperFirst(methodName), clazz);
-                afterMethod.invoke(methodHandler, result);
+                result = afterMethod.invoke(methodHandler, result);
             }
 
             //全局结果处理器

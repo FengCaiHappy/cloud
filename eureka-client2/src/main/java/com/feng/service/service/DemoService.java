@@ -32,4 +32,9 @@ public class DemoService extends DefaultHandler<UserInfo> {
     public Object afterQueryById(UserInfo UserInfo) {
         return UserInfo;
     }
+
+    @Override
+    public Object afterAdd(Integer obj){
+        return obj;
+    }
 }

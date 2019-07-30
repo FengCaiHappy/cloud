@@ -37,7 +37,7 @@ public class DefaultDaoExecutor implements IDaoExecutor {
     @Override
     public <T> T queryById(Object param, String tableName) {
         if(customSQL.get(tableName + ".queryById") != null){
-            Map<String, Object> paramMap = Utils.beanTOMap(param);
+            Map<String, Object> paramMap = Utils.beanToMap(param);
             paramMap.put("tableName", tableName);
             return (T)dynamicSqlMapper.queryById(paramMap);
         }
@@ -49,7 +49,7 @@ public class DefaultDaoExecutor implements IDaoExecutor {
 
     public <T> T list(Object param, String tableName){
         if(customSQL.get(tableName + ".list") != null){
-            Map<String, Object> paramMap = Utils.beanTOMap(param);
+            Map<String, Object> paramMap = Utils.beanToMap(param);
             paramMap.put("tableName", tableName);
             return (T)dynamicSqlMapper.list(paramMap);
         }
