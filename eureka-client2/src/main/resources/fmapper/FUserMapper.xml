@@ -13,14 +13,14 @@
         desc
     </select>
 
-    <select id="userInfo.get">
-        select * from userInfo left join userdetaile on userinfo.id = userdetaile.uid
+    <select id="userInfo.queryById">
+        select * from userdetaile
         where 1 = 1
         <if test="id != '' and id != null">
-            and userInfo.id = #{id}
+            and userdetaile.id = #{id}
         </if>
         <if test="name != '' and name != null">
-            and userInfo.name = #{name}
+            and userdetaile.name = #{name}
         </if>
     </select>
 </IsFtable>

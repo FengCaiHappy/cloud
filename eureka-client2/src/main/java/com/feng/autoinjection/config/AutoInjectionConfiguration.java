@@ -17,11 +17,6 @@ import org.apache.ibatis.parsing.XNode;
 import org.apache.ibatis.parsing.XPathParser;
 import org.apache.ibatis.scripting.xmltags.MixedSqlNode;
 import org.apache.ibatis.scripting.xmltags.XMLScriptBuilder;
-import org.dom4j.Attribute;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +38,6 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -138,7 +132,7 @@ public class AutoInjectionConfiguration {
         return mappers = Utils.getBeanTableMapper(StringUtils.isEmpty(basePackage) ? DEFAULTPACKAGE:basePackage);
     }
 
-    private MixedSqlNode getSqlNode(File file){
+    private void getSqlNode(File file){
         try {
             InputStream inputStream = new FileInputStream(file);
             XPathParser xPathParser = new XPathParser(inputStream);
@@ -148,12 +142,12 @@ public class AutoInjectionConfiguration {
                 XMLScriptBuilder xmlScriptBuilder = new XMLScriptBuilder(configuration, xNode);
                 Method method = XMLScriptBuilder.class.getDeclaredMethod("parseDynamicTags", XNode.class);
                 method.setAccessible(true);
-                return (MixedSqlNode)method.invoke(xmlScriptBuilder, xNode);
+                customSQL.put(xNode.getNode().getAttributes().getNamedItem("id").getTextContent(),
+                        (MixedSqlNode)method.invoke(xmlScriptBuilder, xNode));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     public void getCustomSQL(){
@@ -170,22 +164,7 @@ public class AutoInjectionConfiguration {
         searchFiles(getResourcesFile(), getLocationNameArr(locationName), 0, result);
 
         for(File file : result){
-            SAXReader reader = new SAXReader();
-            Document document = null;
-            try {
-                document = reader.read(file);
-            } catch (DocumentException e) {
-                e.printStackTrace();
-            }
-            Element rootElement = document.getRootElement();
-            if(XMLTAG.equals(rootElement.getName())){
-                Iterator<Element> iterator = rootElement.elementIterator();
-                while(iterator.hasNext()){
-                    Element childElement = iterator.next();
-                    List<Attribute> attributes = childElement.attributes();
-                    customSQL.put(attributes.get(0).getValue(), getSqlNode(file));
-                }
-            }
+            getSqlNode(file);
         }
     }
 
