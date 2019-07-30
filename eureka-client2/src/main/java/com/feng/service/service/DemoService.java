@@ -22,19 +22,25 @@ public class DemoService extends DefaultHandler<UserInfo> {
     public List<Map> list(){
         return userDao.list();
     }
+
     @Override
     public void prepareList(UserInfo obj) {
         System.out.println("哈哈哈哈哈哈哈");
     }
 
     @Override
-    public <UserInfo> List<UserInfo> afterList(ArrayList<UserInfo> obj) {
+    public Object afterList(ArrayList<UserInfo> obj) {
         System.out.println("哈哈哈哈哈哈哈");
         return obj;
     }
 
     @Override
-    public <UserInfo> UserInfo afterQueryById(UserInfo UserInfo) {
+    public void prepareQueryById(UserInfo obj){
+        System.out.println("哈哈哈哈哈哈哈");
+    }
+
+    @Override
+    public Object afterQueryById(UserInfo UserInfo) {
         return UserInfo;
     }
 }

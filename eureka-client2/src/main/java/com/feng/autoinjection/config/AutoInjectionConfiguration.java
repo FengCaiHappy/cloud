@@ -90,7 +90,7 @@ public class AutoInjectionConfiguration {
     @Bean
     public ReBuildSQLPlugin reBuildSQLPlugin(){
         getCustomSQL();
-        return new ReBuildSQLPlugin(customSQL);
+        return new ReBuildSQLPlugin(customSQL, getMappers());
     }
 
     @Bean

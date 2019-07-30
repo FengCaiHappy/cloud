@@ -1,9 +1,10 @@
 package com.feng.autoinjection.mybatisplugin;
 
 
+import com.feng.autoinjection.core.bean.QuickList;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.mapping.SqlCommandType;
+import org.apache.ibatis.mapping.ResultMap;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Intercepts;
@@ -18,6 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -30,13 +34,16 @@ public class ReBuildSQLPlugin implements Interceptor {
 
     private Map<String, MixedSqlNode> customSQL;
 
+    private QuickList quickList;
+
     public ReBuildSQLPlugin(){
         super();
     }
 
-    public ReBuildSQLPlugin(Map<String, MixedSqlNode> customSQL){
+    public ReBuildSQLPlugin(Map<String, MixedSqlNode> customSQL, QuickList quickList){
         this();
         this.customSQL = customSQL;
+        this.quickList = quickList;
     }
 
     @Override
@@ -55,12 +62,22 @@ public class ReBuildSQLPlugin implements Interceptor {
         }
         int INDEX_MS = 0;
         MappedStatement ms = (MappedStatement)args[INDEX_MS];
+        String tableName = paramMap.get("tableName").toString();
+        ResultMap resultMap = new ResultMap.Builder(ms.getConfiguration(),
+                ms.getResultMaps().get(0).getId(),
+                Class.forName(quickList.getBean(tableName).getMapperBeaName()),
+                ms.getResultMaps().get(0).getResultMappings(),
+                true).build();
+        List<ResultMap> resultMapList = new ArrayList<>();
+        resultMapList.add(resultMap);
+        Field field = MappedStatement.class.getDeclaredField("resultMaps");
+        field.setAccessible(true);
+        field.set(ms, resultMapList);
+
         String id = ms.getId();
         String methodName = id.substring(id.lastIndexOf("."), id.length());
-        MixedSqlNode sql = customSQL.get(paramMap.get("tableName") + methodName);
+        MixedSqlNode sql = customSQL.get(tableName + methodName);
         if(!StringUtils.isEmpty(sql)){
-            SqlCommandType sqlCommandType = ms.getSqlCommandType();
-            logger.info("-->intercept sqlCommandType: "+sqlCommandType);
             DynamicSqlSource dynamicSqlSource = new DynamicSqlSource(ms.getConfiguration(), sql);
             MappedStatement newMs = copyFromMappedStatement(ms, dynamicSqlSource);
             args[INDEX_MS] = newMs;

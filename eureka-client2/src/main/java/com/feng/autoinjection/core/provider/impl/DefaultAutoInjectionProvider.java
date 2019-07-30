@@ -14,6 +14,8 @@ import org.springframework.context.ApplicationContext;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class DefaultAutoInjectionProvider implements InterfaceProvider {
@@ -67,7 +69,13 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
             Object result = invokeMethod.invoke(dynamicService, beanParam, tableName);
 
             if(methodHandler != null){
-                Method afterMethod = IMethodHandler.class.getDeclaredMethod("after"+ Utils.upperFirst(methodName), result.getClass());
+                Class clazz;
+                if(result instanceof List){
+                    clazz = ArrayList.class;
+                } else {
+                    clazz = Object.class;
+                }
+                Method afterMethod = IMethodHandler.class.getDeclaredMethod("after"+ Utils.upperFirst(methodName), clazz);
                 afterMethod.invoke(methodHandler, result);
             }
 

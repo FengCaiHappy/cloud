@@ -1,6 +1,10 @@
 package com.feng.autoinjection.dao;
 
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 import java.util.Map;
@@ -9,7 +13,7 @@ import java.util.Map;
 public interface DynamicSqlMapper<T> {
 
     @Select("select * from ${tableName} where ${whereSql};")
-    Map queryById(Map<String, Object> param);
+    T queryById(Map<String, Object> param);
 
     @Select("select * from ${tableName} where ${whereSql};")
     List<Map> list(Map<String, Object> param);

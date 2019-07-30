@@ -1,7 +1,6 @@
 package com.feng.autoinjection.core.opratehandler;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DefaultHandler<T> implements IMethodHandler<T>{
 
@@ -12,7 +11,7 @@ public class DefaultHandler<T> implements IMethodHandler<T>{
     }
 
     @Override
-    public List<T> afterList(ArrayList<T> obj) {
+    public Object afterList(ArrayList<T> obj) {
         return obj;
     }
 
@@ -22,7 +21,7 @@ public class DefaultHandler<T> implements IMethodHandler<T>{
     }
 
     @Override
-    public T afterQueryById(T obj) {
+    public Object afterQueryById(T obj) {
         return obj;
     }
 
@@ -32,7 +31,7 @@ public class DefaultHandler<T> implements IMethodHandler<T>{
     }
 
     @Override
-    public T afterUpdate(T obj) {
+    public Object afterUpdate(Integer obj) {
         return obj;
     }
 
@@ -42,7 +41,7 @@ public class DefaultHandler<T> implements IMethodHandler<T>{
     }
 
     @Override
-    public T afterAdd(T obj) {
+    public Object afterAdd(Integer obj) {
         return obj;
     }
 
@@ -52,7 +51,7 @@ public class DefaultHandler<T> implements IMethodHandler<T>{
     }
 
     @Override
-    public T afterDelete(T obj) {
+    public Object afterDelete(Integer obj) {
         return obj;
     }
 }
