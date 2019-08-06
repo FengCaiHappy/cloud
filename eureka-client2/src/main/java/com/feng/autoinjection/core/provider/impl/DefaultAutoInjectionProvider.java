@@ -3,6 +3,7 @@ package com.feng.autoinjection.core.provider.impl;
 import com.feng.autoinjection.Utils.Utils;
 import com.feng.autoinjection.controller.IDynamicUrlController;
 import com.feng.autoinjection.core.bean.QuickList;
+import com.feng.autoinjection.core.bean.TableMapperInfo;
 import com.feng.autoinjection.core.opratehandler.IMethodHandler;
 import com.feng.autoinjection.core.provider.InterfaceProvider;
 import com.feng.autoinjection.core.resulthandler.IResultHandler;
@@ -23,7 +24,7 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
 
     private IDynamicService dynamicService;
 
-    private QuickList mappers;
+    private QuickList<TableMapperInfo> mappers;
     private IResultHandler handler;
     private ApplicationContext applicationContext;
 

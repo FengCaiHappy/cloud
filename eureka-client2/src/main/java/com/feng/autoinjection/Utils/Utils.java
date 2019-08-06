@@ -32,7 +32,7 @@ public class Utils {
 
     public static List<String> getKeyFromMap(QuickList list){
         List<String> result = new ArrayList<>();
-        Iterator<TableMapperInfo> iter = list.getMapperList().listIterator();
+        Iterator<TableMapperInfo> iter = list.getList().listIterator();
         while(iter.hasNext()){
             result.add(iter.next().getTableName());
         }
@@ -44,8 +44,8 @@ public class Utils {
         return servletRequestAttributes.getRequest();
     }
 
-    public static QuickList getBeanTableMapper(String basePackage){
-        QuickList quickList = new QuickList();
+    public static QuickList<TableMapperInfo> getBeanTableMapper(String basePackage){
+        QuickList<TableMapperInfo> quickList = new QuickList();
         GenericApplicationContext context = new GenericApplicationContext();
         context.refresh();
         Map<String, Object> tableNameBeans = getBeansWithAnnotation(basePackage, context, FTableName.class);
@@ -55,7 +55,7 @@ public class Utils {
         return quickList;
     }
 
-    private static void setMapperInfoList(int type, Map<String, Object> beans, Class<? extends Annotation> annotationClass, QuickList quickList){
+    private static void setMapperInfoList(int type, Map<String, Object> beans, Class<? extends Annotation> annotationClass, QuickList<TableMapperInfo> quickList){
         Iterator<String> iter = beans.keySet().iterator();
         while(iter.hasNext()) {
             Object value = beans.get(iter.next());
@@ -82,7 +82,7 @@ public class Utils {
         return null;
     }
 
-    private static void setPrepareAndAfterInfo(Class<? extends Annotation> annotationClass, Object value, QuickList quickList, String filedName){
+    private static void setPrepareAndAfterInfo(Class<? extends Annotation> annotationClass, Object value, QuickList<TableMapperInfo> quickList, String filedName){
         try {
             String tableName = getValueFromInvoke(annotationClass, value, "tableName").toString();
             TableMapperInfo tableMapperInfo = quickList.getBean(tableName);
@@ -100,7 +100,7 @@ public class Utils {
         }
     }
 
-    private static void setFtableNameInfo(TableMapperInfo tableMapperInfo, Class<? extends Annotation> annotationClass, Object value, QuickList quickList){
+    private static void setFtableNameInfo(TableMapperInfo tableMapperInfo, Class<? extends Annotation> annotationClass, Object value, QuickList<TableMapperInfo> quickList){
         try {
             tableMapperInfo.setTableName(getValueFromInvoke(annotationClass, value, "name").toString());
             tableMapperInfo.setMapperBeaName(value.getClass().getName());

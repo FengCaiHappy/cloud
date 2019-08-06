@@ -4,6 +4,7 @@ import com.feng.autoinjection.Utils.Utils;
 import com.feng.autoinjection.controller.IDynamicUrlController;
 import com.feng.autoinjection.core.autoinvoker.AutoInvoker;
 import com.feng.autoinjection.core.bean.QuickList;
+import com.feng.autoinjection.core.bean.TableMapperInfo;
 import com.feng.autoinjection.core.provider.InterfaceProvider;
 import com.feng.autoinjection.core.provider.impl.DefaultAutoInjectionProvider;
 import com.feng.autoinjection.core.resulthandler.IResultHandler;
@@ -58,7 +59,7 @@ public class AutoInjectionConfiguration {
 
     private static final String XMLTAG = "IsFtable";
 
-    private QuickList mappers;
+    private QuickList<TableMapperInfo> mappers;
 
     private Map<String, MixedSqlNode> customSQL;
 

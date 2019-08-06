@@ -2,6 +2,7 @@ package com.feng.autoinjection.mybatisplugin;
 
 
 import com.feng.autoinjection.core.bean.QuickList;
+import com.feng.autoinjection.core.bean.TableMapperInfo;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ResultMap;
@@ -34,7 +35,7 @@ public class ReBuildSQLPlugin implements Interceptor {
 
     private Map<String, MixedSqlNode> customSQL;
 
-    private QuickList quickList;
+    private QuickList<TableMapperInfo> quickList;
 
     public ReBuildSQLPlugin(){
         super();

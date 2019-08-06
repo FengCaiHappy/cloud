@@ -5,28 +5,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class QuickList {
+public class QuickList<T extends QuickListInterface> {
 
-    private List<TableMapperInfo> mapperList = new ArrayList<>();
+    private List<T> list = new ArrayList<>();
 
     private Map<String, Integer> indexMap = new HashMap<>();
 
-    public void addInfo(TableMapperInfo info){
-        this.mapperList.add(info);
+    public void addInfo(T info){
+        this.list.add(info);
     }
 
-    public List<TableMapperInfo> getMapperList(){
-        return mapperList;
+    public List<T> getList(){
+        return list;
     }
 
-    public TableMapperInfo getBean(String tableName){
-        if(indexMap.get(tableName) != null){
-            return mapperList.get(indexMap.get(tableName));
+    public T getBean(String tagStr){
+        if(indexMap.get(tagStr) != null){
+            return list.get(indexMap.get(tagStr));
         } else {
-          for(int i = 0 , len = mapperList.size(); i < len; i++){
-              if(tableName.equals(mapperList.get(i).getTableName())){
-                  indexMap.put(tableName, i);
-                  return mapperList.get(i);
+          for(int i = 0, len = list.size(); i < len; i++){
+              if(tagStr.equals(list.get(i).getTag())){
+                  indexMap.put(tagStr, i);
+                  return list.get(i);
               }
           }
         }
