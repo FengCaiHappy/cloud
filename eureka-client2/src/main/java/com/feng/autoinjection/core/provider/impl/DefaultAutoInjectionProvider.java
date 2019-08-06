@@ -69,15 +69,7 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
             Object result = invokeMethod.invoke(dynamicService, beanParam, tableName);
 
             if(methodHandler != null){
-                Class clazz;
-                if(result instanceof List){
-                    clazz = ArrayList.class;
-                } else if(result instanceof Integer){
-                    clazz = Integer.class;
-                } else {
-                    clazz = Object.class;
-                }
-                Method afterMethod = IMethodHandler.class.getDeclaredMethod("after"+ Utils.upperFirst(methodName), clazz);
+                Method afterMethod = IMethodHandler.class.getDeclaredMethod("after"+ Utils.upperFirst(methodName), getResultClass(result));
                 result = afterMethod.invoke(methodHandler, result);
             }
 
@@ -91,6 +83,18 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
             e.printStackTrace();
         }
         return "";
+    }
+
+    private Class getResultClass(Object result){
+        Class clazz;
+        if(result instanceof List){
+            clazz = ArrayList.class;
+        } else if(result instanceof Integer){
+            clazz = Integer.class;
+        } else {
+            clazz = Object.class;
+        }
+        return clazz;
     }
 
     private Object getHandlerBean(String tableName){
