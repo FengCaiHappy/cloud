@@ -12,7 +12,6 @@ import com.feng.autoinjection.daoexecutor.impl.DefaultDaoExecutor;
 import com.feng.autoinjection.mybatisplugin.ReBuildSQLPlugin;
 import com.feng.autoinjection.service.IDynamicService;
 import com.feng.autoinjection.service.impl.DefaultDynamicService;
-import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.ibatis.parsing.XNode;
 import org.apache.ibatis.parsing.XPathParser;
 import org.apache.ibatis.scripting.xmltags.MixedSqlNode;
@@ -26,17 +25,17 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -132,9 +131,9 @@ public class AutoInjectionConfiguration {
         return mappers = Utils.getBeanTableMapper(StringUtils.isEmpty(basePackage) ? DEFAULTPACKAGE:basePackage);
     }
 
-    private void getSqlNode(File file){
+    private void getSqlNode(InputStream inputStream){
         try {
-            InputStream inputStream = new FileInputStream(file);
+           // InputStream inputStream = new FileInputStream(file);
             XPathParser xPathParser = new XPathParser(inputStream);
             XNode allNode = xPathParser.evalNode("/"+XMLTAG);
             org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
@@ -160,48 +159,22 @@ public class AutoInjectionConfiguration {
             return;
         }
 
-        List<File> result = new ArrayList<>();
-        searchFiles(getResourcesFile(), getLocationNameArr(locationName), 0, result);
-
-        for(File file : result){
-            getSqlNode(file);
-        }
-    }
-
-    private File getResourcesFile(){
-        String classPath = this.getClass().getResource("/").getPath();
-        File rootFile = new File(classPath).getParentFile();
-        File[] files = rootFile.listFiles();
-        File result = null;
-        for(File file : files){
-            if(file.getName().contains("resources")){
-                result = file;
+        Resource[] resources = getResources(locationName);
+        for(Resource resource : resources){
+            try {
+                getSqlNode(resource.getInputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-
-        if(result == null){
-            result = new File(classPath);
-        }
-        return result;
     }
 
-    private static String[] getLocationNameArr(String locationName){
-        if(locationName.startsWith("/")){
-            locationName = locationName.substring(1, locationName.length());
-        }
-        return locationName.split("/");
-    }
-
-    public static void searchFiles(File rootFile, String[] path, int level, List<File> result) {
-        File[] files = rootFile.listFiles((FileFilter) new WildcardFileFilter(path[level]));
-        if(files.length > 0){
-            for(File file : files){
-                if(file.isDirectory()){
-                    searchFiles(file, path, level+1, result);
-                } else{
-                    result.add(file);
-                }
-            }
+    private Resource[] getResources(String location) {
+        try {
+            ResourcePatternResolver resourceResolver = new PathMatchingResourcePatternResolver();
+            return resourceResolver.getResources(location);
+        } catch (IOException e) {
+            return new Resource[0];
         }
     }
 
