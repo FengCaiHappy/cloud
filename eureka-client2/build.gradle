@@ -23,8 +23,6 @@ dependencies {
     implementation 'mysql:mysql-connector-java:6.0.6'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'org.projectlombok:lombok:1.18.8'
-    // https://mvnrepository.com/artifact/commons-io/commons-io
-    compile group: 'commons-io', name: 'commons-io', version: '2.6'
     //compile fileTree(dir:'dirs',includes:['*jar'])
     // https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter
     //compile group: 'com.github.pagehelper', name: 'pagehelper-spring-boot-starter', version: '1.2.12'
