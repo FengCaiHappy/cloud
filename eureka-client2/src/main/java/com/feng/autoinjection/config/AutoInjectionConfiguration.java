@@ -146,7 +146,7 @@ public class AutoInjectionConfiguration {
         }
     }
 
-    public Map<String, MixedSqlNode> getCustomSQL(){
+    private Map<String, MixedSqlNode> getCustomSQL(){
         if(customSQL != null){
             return customSQL;
         }

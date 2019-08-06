@@ -30,11 +30,13 @@ import java.util.Map;
 
 public class Utils {
 
-    public static List<String> getKeyFromMap(QuickList list){
+    public static List<String> getKeyFromMap(QuickList<TableMapperInfo> list){
         List<String> result = new ArrayList<>();
         Iterator<TableMapperInfo> iter = list.getList().listIterator();
         while(iter.hasNext()){
-            result.add(iter.next().getTableName());
+            TableMapperInfo tableMapperInfo = iter.next();
+            result.add(StringUtils.isEmpty(tableMapperInfo.getUrlName())?
+                    tableMapperInfo.getTableName():tableMapperInfo.getUrlName());
         }
         return result;
     }
@@ -102,7 +104,8 @@ public class Utils {
 
     private static void setFtableNameInfo(TableMapperInfo tableMapperInfo, Class<? extends Annotation> annotationClass, Object value, QuickList<TableMapperInfo> quickList){
         try {
-            tableMapperInfo.setTableName(getValueFromInvoke(annotationClass, value, "name").toString());
+            tableMapperInfo.setTableName(getValueFromInvoke(annotationClass, value, "tableName").toString());
+            tableMapperInfo.setUrlName(getValueFromInvoke(annotationClass, value, "urlName").toString());
             tableMapperInfo.setMapperBeaName(value.getClass().getName());
             quickList.addInfo(tableMapperInfo);
         } catch (Exception e) {

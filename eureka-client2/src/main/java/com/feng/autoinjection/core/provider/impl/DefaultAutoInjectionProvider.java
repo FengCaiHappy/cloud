@@ -54,7 +54,7 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
         if(patterns == null || patterns.length < 2){
             return null;
         }
-        String tableName = patterns[1], methodName = patterns[2];
+        String tableName = getTableName(patterns[1]), methodName = patterns[2];
         Map<String, Object> params = Utils.getParameterMap(request);
         try {
             Object beanParam = Utils.mapToBean(params, Class.forName(getBeanFullName(tableName)));
@@ -107,8 +107,11 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
         return null;
     }
 
-    private String getBeanFullName(String beanName){
-        return mappers.getBean(beanName).getMapperBeaName();
+    private String getBeanFullName(String tableName){
+        return mappers.getBean(tableName).getMapperBeaName();
     }
 
+    private String getTableName(String urlName){
+        return mappers.getBean(urlName).getTableName();
+    }
 }

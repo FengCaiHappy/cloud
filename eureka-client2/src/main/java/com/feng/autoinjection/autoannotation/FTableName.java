@@ -11,5 +11,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface FTableName {
-    String name();
+    String tableName();
+
+    String urlName() default "";
 }

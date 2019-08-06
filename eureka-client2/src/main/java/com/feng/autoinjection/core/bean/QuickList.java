@@ -24,7 +24,7 @@ public class QuickList<T extends QuickListInterface> {
             return list.get(indexMap.get(tagStr));
         } else {
           for(int i = 0, len = list.size(); i < len; i++){
-              if(tagStr.equals(list.get(i).getTag())){
+              if(list.get(i).hasBean(tagStr)){
                   indexMap.put(tagStr, i);
                   return list.get(i);
               }

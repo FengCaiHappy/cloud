@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@FTableName(name="userInfo")
+@FTableName(tableName="userInfo", urlName = "user")
 public class UserInfo {
 
     private Integer id;
