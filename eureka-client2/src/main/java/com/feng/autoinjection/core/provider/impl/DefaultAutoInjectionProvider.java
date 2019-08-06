@@ -49,7 +49,7 @@ public class DefaultAutoInjectionProvider implements InterfaceProvider {
     public Object implMethod(Method method, Object[] args) {
         long startTime = System.currentTimeMillis();
         HttpServletRequest request = Utils.getHttpRequest();
-        String url = request.getRequestURI();
+        String url = request.getServletPath();
         String[] patterns = url.split("/");
         if(patterns == null || patterns.length < 2){
             return null;
