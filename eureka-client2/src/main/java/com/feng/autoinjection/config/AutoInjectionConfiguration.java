@@ -27,7 +27,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
@@ -156,8 +155,7 @@ public class AutoInjectionConfiguration {
             return customSQL;
         }
 
-        Resource[] resources = getResources(locationName);
-        for(Resource resource : resources){
+        for(Resource resource : getResources(locationName)){
             try {
                 getSqlNode(resource.getInputStream());
             } catch (IOException e) {
@@ -169,8 +167,7 @@ public class AutoInjectionConfiguration {
 
     private Resource[] getResources(String location) {
         try {
-            ResourcePatternResolver resourceResolver = new PathMatchingResourcePatternResolver();
-            return resourceResolver.getResources(location);
+            return new PathMatchingResourcePatternResolver().getResources(location);
         } catch (IOException e) {
             return new Resource[0];
         }
