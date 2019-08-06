@@ -61,9 +61,14 @@ public class ReBuildSQLPlugin implements Interceptor {
         if(paramMap == null){
             return invocation.proceed();
         }
+        String tableName = paramMap.get("tableName").toString();
+        if(StringUtils.isEmpty(tableName)){
+            return invocation.proceed();
+        }
+
         int INDEX_MS = 0;
         MappedStatement ms = (MappedStatement)args[INDEX_MS];
-        String tableName = paramMap.get("tableName").toString();
+
         ResultMap resultMap = new ResultMap.Builder(ms.getConfiguration(),
                 ms.getResultMaps().get(0).getId(),
                 Class.forName(quickList.getBean(tableName).getMapperBeaName()),
