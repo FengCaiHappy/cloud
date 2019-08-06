@@ -76,14 +76,12 @@ public class AutoInjectionConfiguration {
 
     @Bean
     public IDaoExecutor daoExecutor(){
-        getCustomSQL();
-        return new DefaultDaoExecutor(customSQL);
+        return new DefaultDaoExecutor(getCustomSQL());
     }
 
     @Bean
     public ReBuildSQLPlugin reBuildSQLPlugin(){
-        getCustomSQL();
-        return new ReBuildSQLPlugin(customSQL, getMappers());
+        return new ReBuildSQLPlugin(getCustomSQL(), getMappers());
     }
 
     @Bean
@@ -133,7 +131,6 @@ public class AutoInjectionConfiguration {
 
     private void getSqlNode(InputStream inputStream){
         try {
-           // InputStream inputStream = new FileInputStream(file);
             XPathParser xPathParser = new XPathParser(inputStream);
             XNode allNode = xPathParser.evalNode("/"+XMLTAG);
             org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
@@ -149,14 +146,14 @@ public class AutoInjectionConfiguration {
         }
     }
 
-    public void getCustomSQL(){
+    public Map<String, MixedSqlNode> getCustomSQL(){
         if(customSQL != null){
-            return;
+            return customSQL;
         }
         customSQL = new HashMap<>();
         if(StringUtils.isEmpty(locationName)|| "/".equals(locationName.trim())){
             logger.info("Do no set ftables.xml-location, only can operation single table");
-            return;
+            return customSQL;
         }
 
         Resource[] resources = getResources(locationName);
@@ -167,6 +164,7 @@ public class AutoInjectionConfiguration {
                 e.printStackTrace();
             }
         }
+        return customSQL;
     }
 
     private Resource[] getResources(String location) {
