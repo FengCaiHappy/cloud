@@ -142,6 +142,7 @@ public class Utils {
             } else {
                 value = valueObj.toString();
             }
+            value.replaceAll("'", "’");
             returnMap.put(name, value);
         }
         return returnMap;
