@@ -21,8 +21,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -68,17 +66,10 @@ public class ReBuildSQLPlugin implements Interceptor {
 
         int INDEX_MS = 0;
         MappedStatement ms = (MappedStatement)args[INDEX_MS];
-
-        ResultMap resultMap = new ResultMap.Builder(ms.getConfiguration(),
-                ms.getResultMaps().get(0).getId(),
-                Class.forName(quickList.getBean(tableName).getMapperBeaName()),
-                ms.getResultMaps().get(0).getResultMappings(),
-                true).build();
-        List<ResultMap> resultMapList = new ArrayList<>();
-        resultMapList.add(resultMap);
-        Field field = MappedStatement.class.getDeclaredField("resultMaps");
+        ResultMap resultMap = ms.getResultMaps().get(0);
+        Field field = ResultMap.class.getDeclaredField("type");
         field.setAccessible(true);
-        field.set(ms, resultMapList);
+        field.set(resultMap, Class.forName(quickList.getBean(tableName).getMapperBeaName()));
 
         String id = ms.getId();
         String methodName = id.substring(id.lastIndexOf("."), id.length());
