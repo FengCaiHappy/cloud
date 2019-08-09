@@ -14,4 +14,6 @@ public @interface FTableName {
     String tableName();
 
     String urlName() default "";
+
+    String[] forbiddenUrl() default{"index", "delete"};
 }

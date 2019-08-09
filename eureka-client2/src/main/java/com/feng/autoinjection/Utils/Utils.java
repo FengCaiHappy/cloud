@@ -62,8 +62,7 @@ public class Utils {
         while(iter.hasNext()) {
             Object value = beans.get(iter.next());
             if(type == 1){
-                TableMapperInfo tableMapperInfo = new TableMapperInfo();
-                setFtableNameInfo(tableMapperInfo, annotationClass, value, quickList);
+                setFtableNameInfo(new TableMapperInfo(), annotationClass, value, quickList);
             } else if(type == 2){
                 setPrepareAndAfterInfo(annotationClass, value, quickList, "methodHandlerName");
             }
@@ -77,7 +76,7 @@ public class Utils {
             if(!method.isAccessible()){
                 method.setAccessible(true);
             }
-            return method.invoke(annotation, null).toString();
+            return method.invoke(annotation, null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -106,6 +105,7 @@ public class Utils {
         try {
             tableMapperInfo.setTableName(getValueFromInvoke(annotationClass, value, "tableName").toString());
             tableMapperInfo.setUrlName(getValueFromInvoke(annotationClass, value, "urlName").toString());
+            tableMapperInfo.setForbiddenUrl((String[]) getValueFromInvoke(annotationClass, value, "forbiddenUrl"));
             tableMapperInfo.setMapperBeaName(value.getClass().getName());
             quickList.addInfo(tableMapperInfo);
         } catch (Exception e) {

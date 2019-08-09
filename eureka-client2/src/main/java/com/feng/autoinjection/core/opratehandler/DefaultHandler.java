@@ -6,6 +6,16 @@ public class DefaultHandler<T> implements IMethodHandler<T>{
 
 
     @Override
+    public void prepareIndex(T obj) {
+
+    }
+
+    @Override
+    public String afterIndex(Object obj) {
+        return obj.toString();
+    }
+
+    @Override
     public void prepareList(T obj) {
 
     }

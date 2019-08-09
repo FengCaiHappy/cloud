@@ -12,6 +12,8 @@ public class TableMapperInfo extends AbstractInterface{
 
     private String urlName;
 
+    private String[] forbiddenUrl;
+
     @Override
     public String getTag() {
         return this.tableName;

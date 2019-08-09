@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 public interface IMethodHandler<T> {
 
+    void prepareIndex(T obj);
+
+    String afterIndex(Object obj);
+
     void prepareList(T obj);
 
     Object afterList(ArrayList<T> obj);

@@ -36,6 +36,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,6 +98,9 @@ public class AutoInjectionConfiguration {
         List<String> tableNames = Utils.getKeyFromMap(getMappers());
         for(String tableName : tableNames){
             for(int i = 0, len = defaultUrls.length; i < len; i++){
+                if(Arrays.asList(mappers.getBean(tableName).getForbiddenUrl()).contains(defaultUrls[i])){
+                    continue;
+                }
                 PatternsRequestCondition patterns = new PatternsRequestCondition("/" + tableName + "/" + defaultUrls[i]);
                 logger.info("动态创建URL:" + "/" + tableName + "/" + defaultUrls[i]);
 //              RequestMethodsRequestCondition methods = new RequestMethodsRequestCondition(RequestMethod.GET);
