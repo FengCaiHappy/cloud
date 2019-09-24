@@ -3,11 +3,16 @@ spring:
     config:
       label: master
       server:
-        git:
-          uri: https://github.com/FengCaiHappy/cloud-config.git
-          username:
-          password:
-          timeout: 10
+        native:
+          search-locations: classpath:/config
+          add-label-locations: true
+#        git:
+#          uri: https://github.com/FengCaiHappy/cloud-config.git
+#          username:
+#          password:
+#          timeout: 10
+  profiles:
+    active: native
   application:
     name: cloud-config
 

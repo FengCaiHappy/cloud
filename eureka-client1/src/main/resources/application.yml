@@ -4,7 +4,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/,http://localhost:8766/eureka/
+      defaultZone: http://localhost:8761/eureka/ #,http://localhost:8766/eureka/
 
 spring:
   application:
@@ -13,4 +13,4 @@ spring:
       config:
         label: master
         uri: http://localhost:8888/
-        profile:
+        profile: dev
